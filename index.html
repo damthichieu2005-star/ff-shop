@@ -3,166 +3,86 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ShopBinBoiUyTin – Bán Acc & KC Free Fire</title>
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            color: white;
-            background: url('https://i.ibb.co/DRyWbnF/ff-bg-dark.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        .site-header {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px 0;
-            text-align: center;
-        }
-
-        .site-header img {
-            width: 120px;
-        }
-
-        nav a {
-            color: #00eaff;
-            margin: 0 12px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 900px;
-            margin: auto;
-            padding-top: 20px;
-        }
-
-        h2 {
-            border-left: 5px solid #00eaff;
-            padding-left: 10px;
-        }
-
-        .product-card {
-            background: rgba(0, 0, 0, 0.65);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            border: 1px solid #00eaff;
-        }
-
-        .product-card img {
-            width: 100%;
-            border-radius: 10px;
-        }
-
-        button {
-            background: #00eaff;
-            border: none;
-            padding: 10px 20px;
-            margin-top: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #00b5cc;
-        }
-
-        .pay-box {
-            background: rgba(0,0,0,0.7);
-            padding: 12px;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-    </style>
+    <title>ShopBinBoi – Bán Acc Free Fire & KC</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
 
 <header class="site-header">
-    <img src="https://i.ibb.co/9Y4g5LX/binboi-logo.png" alt="Logo Shop">
-    <nav>
-        <a href="#shop">Sản phẩm</a>
-        <a href="#how">Cách mua</a>
-        <a href="#tos">Điều khoản</a>
-        <a href="#contact">Liên hệ</a>
-    </nav>
+    <div class="container header-flex">
+        <img src="logo.png" class="logo" />
+        <h1>ShopBinBoi Uy Tín</h1>
+        <nav>
+            <a href="#shop">Sản phẩm</a>
+            <a href="#how">Cách mua</a>
+            <a href="#tos">Điều khoản</a>
+            <a href="#contact">Liên hệ</a>
+        </nav>
+    </div>
 </header>
 
 <main class="container">
 
-    <!-- =================== SHOP =================== -->
     <section id="shop">
-        <h2>Danh sách ACC Free Fire</h2>
+        <h2>Danh sách ACC VIP</h2>
 
-        <!-- ACC cổ 1tr2 -->
+        <!-- ACC 1 -->
         <div class="product-card">
-            <img src="https://i.ibb.co/hZ3HyL2/acc-1.jpg" alt="Acc 1tr2">
-            <h3>Acc cổ – 1.200.000đ</h3>
-            <p>Acc cổ – nhiều đồ hiếm – uy tín 100%.</p>
-            <button>Mua ngay</button>
+            <img src="acc1.jpg" class="product-img">
+            <h3>Acc FF VIP – 980K</h3>
+            <p>Full skin súng – đồ hiếm – siêu VIP.</p>
+            <button onclick="pay('Acc FF VIP 980K')">Mua ngay</button>
         </div>
 
         <!-- ACC 2 -->
         <div class="product-card">
-            <img src="https://i.ibb.co/wyvGf3B/acc-2.jpg" alt="Acc VIP">
-            <h3>Acc VIP – 980.000đ</h3>
-            <p>Acc full skin, súng, đồ hiếm.</p>
-            <button>Mua ngay</button>
-        </div>
-
-        <!-- ACC 3 -->
-        <div class="product-card">
-            <img src="https://i.ibb.co/85z8Q6F/acc-3.jpg" alt="Acc 3">
-            <h3>Acc FF – 500.000đ</h3>
-            <p>Acc ngon – giá mềm – uy tín 100%.</p>
-            <button>Mua ngay</button>
+            <img src="acc2.jpg" class="product-img">
+            <h3>Acc Free Fire Cổ – 1.200.000đ</h3>
+            <p>Acc cổ hiếm, nhiều đồ giới hạn.</p>
+            <button onclick="pay('Acc FF Cổ 1tr2')">Mua ngay</button>
         </div>
 
     </section>
 
-    <!-- =================== CÁCH MUA =================== -->
     <section id="how">
         <h2>Cách mua</h2>
-        <p>1. Chọn acc muốn mua và bấm "Mua ngay"</p>
-        <p>2. Nhắn Zalo để nhận hỗ trợ</p>
-        <p>3. Thanh toán – nhận acc trong 1 phút</p>
-
-        <div class="pay-box">
-            <h3>Thanh toán MOMO</h3>
-            <p>SĐT: <b>0347676833</b> – Ngân Minh Hiếu</p>
-
-            <h3>Ngân hàng MB Bank</h3>
-            <p>Số TK: <b>0347676833</b> – Ngân Minh Hiếu</p>
-        </div>
+        <p>1. Chọn acc muốn mua.</p>
+        <p>2. Nhấn “Mua ngay” để hiện QR thanh toán.</p>
+        <p>3. Thanh toán xong nhắn Zalo/Facebook để nhận acc.</p>
     </section>
 
-    <!-- =================== ĐIỀU KHOẢN =================== -->
     <section id="tos">
         <h2>Điều khoản</h2>
-        <p>✔ Bảo hành 24h sau khi mua</p>
-        <p>✔ Không đổi trả nếu đăng nhập sai</p>
-        <p>✔ Shop uy tín – hỗ trợ nhanh</p>
+        <p>✔ Bảo hành 24h</p>
+        <p>✔ Không đổi trả sau khi đổi mật khẩu</p>
+        <p>✔ Shop BinBoi uy tín – hỗ trợ nhanh</p>
     </section>
 
-    <!-- =================== LIÊN HỆ =================== -->
     <section id="contact">
         <h2>Liên hệ</h2>
-
-        <p>Zalo: <strong>0347676833</strong></p>
-
-        <p>Facebook:  
-            <a style="color:#00eaff;"
-               href="https://www.facebook.com/share/1B9hNnNzsC/?mibextid=wwXIfr"
-               target="_blank">
-               Ngân Minh Hiếu
-            </a>
-        </p>
+        <p>Zalo: <b>0347676833</b></p>
+        <p>Facebook: <b>Ngân Minh Hiếu</b></p>
     </section>
 
 </main>
 
+<!-- POPUP THANH TOÁN -->
+<div id="paymentPopup" class="popup">
+    <div class="popup-content">
+        <h3>Thanh Toán</h3>
+        <p id="productName"></p>
+
+        <h4>MoMo</h4>
+        <img src="momo.jpg" class="qr">
+
+        <h4>MB Bank</h4>
+        <img src="mb.jpg" class="qr">
+
+        <button onclick="closePopup()">Đóng</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
