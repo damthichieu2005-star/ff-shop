@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FF Shop - Bán Acc & KC</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>FF Shop</h1>
+      <nav>
+        <a href="#shop">Sản phẩm</a>
+        <a href="#how">Cách mua</a>
+        <a href="#tos">Điều khoản</a>
+        <a href="#contact">Liên hệ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="hero" class="hero">
+      <h2>Mua acc Free Fire & KC thật, giao dịch an toàn</h2>
+      <p>Danh sách acc và gói KC (mã nội tệ) — kiểm tra kỹ mô tả trước khi mua.</p>
+      <a class="btn" href="#shop">Mua ngay</a>
+    </section>
+
+    <section id="shop" class="shop">
+      <h3>Sản phẩm nổi bật</h3>
+      <div id="product-list" class="product-grid">
+        <!-- Product cards inserted by script -->
+      </div>
+    </section>
+
+    <section id="how" class="info">
+      <h3>Cách mua</h3>
+      <ol>
+        <li>Chọn sản phẩm, bấm "Mua".</li>
+        <li>Kiểm tra mô tả (rank, skin, email...).</li>
+        <li>Thanh toán qua chuyển khoản/Stripe/PayPal (tùy cài đặt của bạn).</li>
+        <li>Người bán giao acc và hướng dẫn đổi mật khẩu/2FA.</li>
+      </ol>
+      <p><strong>Ghi chú bảo mật:</strong> Việc mua bán acc có thể vi phạm điều khoản của Garena. Người mua/chủ shop chịu trách nhiệm.</p>
+    </section>
+
+    <section id="tos" class="tos">
+      <h3>Điều khoản & An toàn</h3>
+      <ul>
+        <li>Tất cả acc được mô tả trung thực theo thông tin bên dưới mỗi sản phẩm.</li>
+        <li>Không hoàn tiền nếu người mua thay đổi ý định — trừ khi có lỗi kỹ thuật hoặc lừa đảo được chứng minh.</li>
+        <li>Shop khuyến nghị đổi email và mật khẩu ngay khi nhận acc.</li>
+      </ul>
+    </section>
+
+    <section id="contact" class="contact">
+      <h3>Liên hệ</h3>
+      <p>Email: <span id="email">support@ffshop.example</span></p>
+      <p>Số điện thoại/Zalo: <span id="phone">+84 9xx xxx xxx</span></p>
+    </section>
+  </main>
+
+  <div id="cart-modal" class="modal hidden">
+    <div class="modal-content">
+      <h4>Thanh toán</h4>
+      <div id="cart-items"></div>
+      <div class="cart-total">Tổng: <span id="total">0</span>₫</div>
+      <button id="checkoutBtn" class="btn">Thanh toán (mô phỏng)</button>
+      <button id="closeModal" class="btn ghost">Đóng</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© FF Shop • Lưu ý: Mua bán acc có thể vi phạm Điều khoản của nhà phát hành.</small>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
