@@ -1,551 +1,467 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ShopBinBoiUyTin • Acc Free Fire</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <img id="logo" src="images/logo.png" alt="ShopBinBoi" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
-        <div class="brand-text">
-          <div class="shop-name">ShopBinBoiUyTin</div>
-          <div class="shop-sub">Acc FF • Momo / MB Bank • Zalo: 0347676833</div>
-        </div>
-      </div>
-
-      <nav class="main-nav">
-        <a href="#products">Sản phẩm</a>
-        <a href="#how">Cách mua</a>
-        <a href="#terms">Điều khoản</a>
-        <a href="#contact">Liên hệ</a>
-      </nav>
-
-      <div class="actions">
-        <button id="cartBtn" class="cart-btn">🛒 <span id="cartCount">0</span></button>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-left">
-          <h1>ShopBinBoi — Acc Free Fire Uy Tín</h1>
-          <p class="lead">Thanh toán nhanh: <strong>MB Bank</strong> hoặc <strong>MoMo</strong>. Giao nick sau khi kiểm tra thanh toán.</p>
-          <div class="hero-cta">
-            <button class="btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Xem sản phẩm</button>
-            <a class="btn ghost" href="https://zalo.me/0347676833" target="_blank">Chat Zalo</a>
-          </div>
-        </div>
-        <div class="hero-right">
-          <img src="images/banner.jpg" alt="banner" onerror="this.src='https://via.placeholder.com/600x360?text=ShopBinBoi'">
-        </div>
-      </div>
-    </section>
-
-    <section id="products" class="container section">
-      <h2>Sản phẩm nổi bật</h2>
-      <div id="productsGrid" class="grid"></div>
-    </section>
-
-    <section id="how" class="container section card">
-      <h3>Cách mua</h3>
-      <ol>
-        <li>Chọn acc → Thêm vào giỏ.</li>
-        <li>Vào Giỏ → Thanh toán → Chọn Momo hoặc Chuyển khoản MB.</li>
-        <li>Chuyển tiền theo nội dung → Gửi biên lai Zalo: <strong>0347676833</strong>.</li>
-        <li>Shop kiểm tra & gửi thông tin acc.</li>
-      </ol>
-    </section>
-
-    <section id="terms" class="container section card">
-      <h3>Điều khoản</h3>
-      <ul>
-        <li>Bảo hành 24h (theo điều kiện shop).</li>
-        <li>Không hoàn tiền nếu đổi mật khẩu sai do khách hàng.</li>
-        <li>Shop có quyền từ chối nếu phát hiện giao dịch nghi vấn.</li>
-      </ul>
-    </section>
-
-    <section id="contact" class="container section card">
-      <h3>Liên hệ & Thanh toán</h3>
-      <div class="pay-grid">
-        <div class="pay-card">
-          <h4>Ngân hàng (MB)</h4>
-          <p><strong>STK:</strong> <span id="mbAccount">0347676833</span></p>
-          <p><strong>Chủ TK:</strong> <span id="mbName">Ngân Minh Hiếu</span></p>
-        </div>
-        <div class="pay-card">
-          <h4>MoMo</h4>
-          <p><strong>Số MoMo:</strong> 0347676833</p>
-          <img id="momoQR" src="images/qr-momo.png" alt="QR Momo" onerror="this.src='https://via.placeholder.com/200?text=MoMo+QR'">
-        </div>
-        <div class="pay-card">
-          <h4>Liên hệ nhanh</h4>
-          <p>Zalo: <a href="https://zalo.me/0347676833" target="_blank">0347676833</a></p>
-          <p>Facebook: <a id="fbLink" href="https://www.facebook.com/nganminhhieu" target="_blank">Ngân Minh Hiếu</a></p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- CART MODAL -->
-  <div id="cartModal" class="modal hidden">
-    <div class="modal-body">
-      <button class="close" id="closeCart">✕</button>
-      <h3>Giỏ hàng</h3>
-      <div id="cartList"></div>
-      <div class="cart-footer">
-        <div>Tổng: <span id="cartTotal">0 ₫</span></div>
-        <div class="cart-actions">
-          <button class="btn ghost" id="clearCart">Xóa</button>
-          <button class="btn" id="openCheckout">Thanh toán</button>
-        </div>
-      </div>
-      <div id="orderDownload" style="margin-top:10px"></div>
-    </div>
-  </div>
-
-  <!-- CHECKOUT MODAL -->
-  <div id="checkoutModal" class="modal hidden">
-    <div class="modal-body">
-      <button class="close" id="closeCheckout">✕</button>
-      <h3>Xác nhận đơn hàng</h3>
-      <div id="checkoutSummary"></div>
-
-      <div class="pay-methods">
-        <label><input type="radio" name="pay" value="momo" checked> MoMo</label>
-        <label><input type="radio" name="pay" value="bank"> MB Bank</label>
-      </div>
-
-      <div id="momoInfo" class="pay-info">
-        <p>SĐT MoMo: <b>0347676833</b></p>
-        <img src="images/qr-momo.png" alt="QR MoMo" class="qr" onerror="this.src='https://via.placeholder.com/200?text=MoMo+QR'">
-        <p><button class="btn ghost" onclick="copyText('0347676833')">Sao chép SĐT</button></p>
-      </div>
-
-      <div id="bankInfo" class="pay-info hidden">
-        <p><b>Ngân hàng:</b> MB Bank</p>
-        <p><b>STK:</b> <span id="mbAcc">0347676833</span></p>
-        <p><b>Chủ TK:</b> NGÂN MINH HIẾU</p>
-        <p><button class="btn ghost" onclick="copyText(document.getElementById('mbAcc').innerText)">Sao chép STK</button></p>
-      </div>
-
-      <div style="margin-top:8px">
-        <label>Họ tên</label>
-        <input type="text" id="buyerName" placeholder="Tên người mua">
-        <label>SĐT</label>
-        <input type="text" id="buyerPhone" placeholder="Số điện thoại">
-        <label>Ghi chú</label>
-        <input type="text" id="buyerNote" placeholder="Ví dụ: mua acc VIP 1">
-      </div>
-
-      <div style="margin-top:12px">
-        <button class="btn" id="placeOrderBtn">Tạo đơn & Tải JSON</button>
-        <button class="btn ghost" id="cancelCheckout">Hủy</button>
-      </div>
-
-      <p class="small">Sau khi chuyển tiền, gửi biên lai Zalo: <strong>0347676833</strong></p>
-    </div>
-  </div>
-
-  <footer class="site-footer">© <span id="year"></span> ShopBinBoiUyTin — Liên hệ: 0347676833</footer>
-
-  <script src="script.js"></script>
-</body>
-</html>
-<!-- ========= VÒNG QUAY KIM CƯƠNG (PAID SPIN) ========= -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ShopBinBoi — FF Shop</title>
 <style>
-/* --- styles riêng cho spinner --- */
-.spin-wrap {background:#0b1220;color:#e6eef6;padding:18px;border-radius:12px;margin:20px 0;}
-.spin-inner{display:flex;gap:20px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-.wheel {width:320px;height:320px;border-radius:50%;position:relative;overflow:hidden;margin:auto;box-shadow:0 8px 30px rgba(0,0,0,.5);background:conic-gradient(
-  #1f2937 0deg 266.4deg, /* 74% -> 266.4deg */
-  #2b6fb4 266.4deg 302.4deg, /* 10% -> 36deg */
-  #6b28a3 302.4deg 338.4deg, /* 10% -> 36deg */
-  #d97706 338.4deg 356.4deg, /* 5% -> 18deg */
-  #ef4444 356.4deg 360deg   /* 1% -> 4deg */
-);}
-.wheel .center {position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:50%;background:linear-gradient(180deg,#fff,#ddd);display:flex;align-items:center;justify-content:center;font-weight:700;color:#111}
-.pointer {position:absolute;left:50%;top:-12px;transform:translateX(-50%);width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:24px solid #ff416c;z-index:10}
-.spin-controls {flex:1;min-width:280px}
-.small{font-size:13px;color:#bcd; margin:4px 0}
-.btn-pay{display:inline-block;padding:10px 16px;background:linear-gradient(90deg,#06b6d4,#ff416c);color:white;border-radius:8px;border:0;cursor:pointer}
-.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);color:#e6eef6;padding:8px 12px;border-radius:8px;cursor:pointer}
-.kc-balance{font-size:18px;font-weight:800;color:#ffd166}
-.hist-list{max-height:200px;overflow:auto;padding:8px;background:rgba(255,255,255,0.02);border-radius:8px;margin-top:8px}
-.row {display:flex;gap:8px;align-items:center;justify-content:space-between;margin:6px 0}
-.info {margin-bottom:8px}
-.pay-note{font-size:13px;color:#cfeff0}
-@media(max-width:800px){ .spin-inner{flex-direction:column} .wheel{width:260px;height:260px} }
-</style>
-
-<section class="spin-wrap">
-  <h2>🎡 Vòng quay Kim Cương (150.000₫ / lượt)</h2>
-  <div class="spin-inner">
-    <div style="flex:0 0 360px; text-align:center;">
-      <div class="pointer"></div>
-      <div id="wheel" class="wheel" style="transition: transform 4s cubic-bezier(.2,.8,.2,1);"></div>
-      <div class="center" style="margin-top:12px;">Vòng Quay</div>
-    </div>
-
-    <div class="spin-controls">
-      <div class="info">
-        <div>✅ Giá 1 lượt: <b>150.000₫</b></div>
-        <div class="small">Lưu ý: Kim cương là <b>ảo</b>, KHÔNG thể rút thành tiền thật.</div>
-      </div>
-
-      <div style="margin:8px 0">
-        <div>Saldo KC: <span id="kcBalance" class="kc-balance">0 KC</span></div>
-        <div class="small">Bạn có thể rút mỗi lượt: <b>5.000 KC</b> (rút ảo)</div>
-      </div>
-
-      <div style="margin:12px 0">
-        <button class="btn-pay" id="startSpinBtn">Quay (150.000₫)</button>
-        <button class="btn-ghost" id="withdrawBtn">Rút 5.000 KC</button>
-      </div>
-
-      <div class="pay-note">
-        <div><b>Thanh toán:</b> MB Bank: 0347676833 (Ngân Minh Hiếu) hoặc MoMo 0347676833</div>
-        <div class="small">Sau khi chuyển, bấm "Tôi đã chuyển" để nhận lượt quay.</div>
-      </div>
-
-      <div style="margin-top:12px">
-        <strong>Lịch sử quay & rút</strong>
-        <div id="history" class="hist-list"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Thanh toán xác nhận modal (nhỏ) -->
-<div id="payModal" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:9999">
-  <div style="background:#0b1220;padding:16px;border-radius:10px;width:320px;color:#e6eef6">
-    <h3 style="margin-top:0">Xác nhận thanh toán 150.000₫</h3>
-    <p>Chuyển khoản qua MB hoặc MoMo theo thông tin bên dưới:</p>
-    <p><b>MB Bank:</b> 0347676833 — NGÂN MINH HIẾU</p>
-    <p><b>MoMo:</b> 0347676833</p>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-      <button onclick="closePayModal()" class="btn-ghost">Hủy</button>
-      <button onclick="confirmPaid()" class="btn-pay">Tôi đã chuyển</button>
-    </div>
-    <div style="margin-top:8px;font-size:13px;color:#bcd">Bạn có thể gửi biên lai qua Zalo: 0347676833</div>
-  </div>
-</div>
-
-<script>
-// ========== CONFIG / PRIZES ==========
-// Weights: user provided (60 + 10 + 10 + 5 + 1 = 86) — we add the missing 14% to 0 KC so total = 100%.
-const prizes = [
-  { kc: 0, weight: 74 },    // 60 + 14 (added) => 74% total
-  { kc: 560, weight: 10 },
-  { kc: 3300, weight: 10 },
-  { kc: 9999, weight: 5 },
-  { kc: 100000, weight: 1 }
-];
-const SPIN_PRICE = 150000; // VND
-const WITHDRAW_AMOUNT = 5000; // KC per withdraw (ảo)
-
-// ========== STATE (localStorage) ==========
-const STORAGE_KC = 'shop_virtual_kc';
-const STORAGE_HIST = 'shop_spin_history';
-
-function loadKC(){ return parseInt(localStorage.getItem(STORAGE_KC) || "0", 10); }
-function saveKC(v){ localStorage.setItem(STORAGE_KC, String(v)); }
-function loadHist(){ try { return JSON.parse(localStorage.getItem(STORAGE_HIST) || "[]"); } catch(e){ return []; } }
-function saveHist(h){ localStorage.setItem(STORAGE_HIST, JSON.stringify(h)); }
-
-// ========== RENDER UI ==========
-const kcBalanceEl = document.getElementById('kcBalance');
-const historyEl = document.getElementById('history');
-const wheelEl = document.getElementById('wheel');
-const startBtn = document.getElementById('startSpinBtn');
-const withdrawBtn = document.getElementById('withdrawBtn');
-const payModal = document.getElementById('payModal');
-
-function updateBalanceUI(){ kcBalanceEl.textContent = loadKC().toLocaleString() + " KC"; }
-
-function renderHistory(){
-  const arr = loadHist().slice().reverse(); // newest first
-  if(arr.length === 0){ historyEl.innerHTML = "<p class='small'>Chưa có lịch sử.</p>"; return; }
-  historyEl.innerHTML = '';
-  arr.forEach(it=>{
-    const row = document.createElement('div');
-    row.className = 'row';
-    row.innerHTML = `<div style="font-size:13px">${it.type} — <b>${it.kc?.toLocaleString() ?? ''} KC</b></div><div class="small">${new Date(it.time).toLocaleString()}</div>`;
-    historyEl.appendChild(row);
-  });
-}
-
-// ========== RANDOM PICK (by weights) ==========
-function pickPrize(){
-  const total = prizes.reduce((s,p)=>s+p.weight,0);
-  let r = Math.random() * total;
-  for(let p of prizes){
-    r -= p.weight;
-    if(r <= 0) return p.kc;
-  }
-  return prizes[0].kc;
-}
-
-// ========== SPIN ANIMATION ==========
-let spinning = false;
-function spinAnimation(targetKC, callback){
-  // compute a random angle landing on a sector corresponding to target prize
-  // We'll map sectors in same order as prizes array on wheel (conic-gradient used).
-  // Compute sector angle ranges based on their weights:
-  const total = prizes.reduce((s,p)=>s+p.weight,0);
-  let startAngle = 0;
-  let targetStart = 0, targetEnd = 0;
-  for(let p of prizes){
-    const angle = p.weight / total * 360;
-    if(p.kc === targetKC){
-      targetStart = startAngle;
-      targetEnd = startAngle + angle;
-      break;
-    }
-    startAngle += angle;
-  }
-  // pick a random angle within target sector
-  const pickAngle = targetStart + Math.random() * (targetEnd - targetStart);
-  // compute rotation: several turns + align so pointer (at top) hits pickAngle
-  const spins = 5; // number of full rotations
-  const final = 360*spins + (360 - pickAngle) + 360*0.25; // offset to tune
-  wheelEl.style.transition = 'transform 4s cubic-bezier(.2,.8,.2,1)';
-  wheelEl.style.transform = `rotate(${final}deg)`;
-  spinning = true;
-  // after animation ends
-  setTimeout(()=>{
-    // reset transform to avoid huge transform accumulation (calculate current angle modulo 360)
-    const finalAngle = final % 360;
-    wheelEl.style.transition = 'none';
-    wheelEl.style.transform = `rotate(${finalAngle}deg)`;
-    spinning = false;
-    if(callback) callback();
-  }, 4200);
-}
-
-// ========== PAYMENT FLOW ==========
-function openPayModal(){ payModal.style.display = 'flex'; }
-function closePayModal(){ payModal.style.display = 'none'; }
-
-function confirmPaid(){
-  // user confirms đã chuyển 150k --> perform spin
-  closePayModal();
-  // pick prize and animate
-  const prizeKC = pickPrize();
-  spinAnimation(prizeKC, ()=>{
-    // show result and add KC to user balance
-    const prev = loadKC();
-    const next = prev + prizeKC;
-    saveKC(next);
-    // save history entry
-    const hist = loadHist();
-    hist.push({ type: 'Quay', kc: prizeKC, time: Date.now(), price: SPIN_PRICE });
-    saveHist(hist);
-    updateBalanceUI();
-    renderHistory();
-    alert('Vòng quay xong! Bạn nhận được: ' + prizeKC.toLocaleString() + ' KC (ảo)');
-  });
-}
-
-// ========== BUTTON HANDLERS ==========
-startBtn.addEventListener('click', ()=>{
-  if(spinning) return alert('Vui lòng đợi vòng quay hoàn thành.');
-  // show payment modal to let user confirm they paid 150k
-  openPayModal();
-});
-
-function withdrawKC(){
-  const current = loadKC();
-  if(current < WITHDRAW_AMOUNT) return alert('Bạn không đủ KC để rút (cần ' + WITHDRAW_AMOUNT + ' KC).');
-  // do withdraw (virtual) -> subtract and record
-  const next = current - WITHDRAW_AMOUNT;
-  saveKC(next);
-  const hist = loadHist();
-  hist.push({ type: 'Rút', kc: -WITHDRAW_AMOUNT, time: Date.now() });
-  saveHist(hist);
-  updateBalanceUI();
-  renderHistory();
-  alert('Đã rút ' + WITHDRAW_AMOUNT.toLocaleString() + ' KC (ảo). Lưu ý: KC là ảo, không thể rút tiền thật).');
-}
-
-withdrawBtn.addEventListener('click', ()=>{ withdrawKC(); });
-
-// init
-updateBalanceUI();
-renderHistory();
-
-// close pay modal helper
-function closePayModal(){ payModal.style.display = 'none'; }
-</script>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<title>Shop FF Bin Bói</title>
-<style>
-    body{
-        font-family: Arial, sans-serif;
-        background:#111;
-        color:white;
-        margin:0;
-    }
-    header{
-        background:#222;
-        padding:10px;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        border-bottom:3px solid #ffcc00;
-    }
-    header img{
-        height:60px;
-    }
-    .qr-box img{
-        height:90px;
-        border-radius:10px;
-    }
-    h2{ text-align:center; margin-top:25px; }
-    .grid{
-        display:grid;
-        grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
-        gap:15px;
-        padding:20px;
-    }
-    .card{
-        background:#1a1a1a;
-        border-radius:10px;
-        padding:10px;
-        border:1px solid #333;
-    }
-    .card img{
-        width:100%;
-        height:150px;
-        object-fit:cover;
-        border-radius:10px;
-    }
-    .btn{
-        background:#ffcc00;
-        border:0;
-        padding:10px;
-        border-radius:6px;
-        cursor:pointer;
-        width:100%;
-        font-weight:bold;
-        margin-top:5px;
-    }
-    .btn:hover{ opacity:0.8; }
-
-    /* Vòng quay */
-    #wheelBox{
-        text-align:center;
-        margin-top:30px;
-    }
-    #wheel{
-        width:300px;
-        height:300px;
-        border-radius:50%;
-        border:10px solid #ffcc00;
-        background:#222;
-        margin:auto;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        font-size:25px;
-        font-weight:bold;
-    }
+  :root{--pink:#ff3b8a;--muted:#777;--bg:#f7f7f9}
+  body{font-family:Inter,system-ui,Arial;background:var(--bg);margin:0;color:#111}
+  header{background:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #eee;position:sticky;top:0;z-index:20}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo img{width:48px;height:48px;border-radius:8px;object-fit:cover}
+  .title{font-weight:700;font-size:18px}
+  nav{margin-left:auto;display:flex;gap:12px;align-items:center}
+  nav button{background:transparent;border:0;color:var(--muted);cursor:pointer}
+  .hero{background:linear-gradient(180deg,#120012 0%,#241326 100%);color:#fff;padding:28px 16px;text-align:center}
+  .hero h1{margin:0;font-size:20px}
+  .hero p{margin:8px 0 12px;color:#ffd6f0}
+  .wrap{max-width:1100px;margin:18px auto;padding:0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+  .card{background:#fff;border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+  .card img{width:100%;height:160px;object-fit:cover;border-radius:8px;background:#eee}
+  .price{color:var(--pink);font-weight:700}
+  .actions{display:flex;gap:8px}
+  .btn{padding:8px 12px;border-radius:8px;border:0;background:var(--pink);color:#fff;cursor:pointer}
+  .btn.outline{background:transparent;border:1px solid #ddd;color:#333}
+  .cart-btn{position:relative}
+  #cartCount{position:absolute;top:-6px;right:-8px;background:#ff4b6e;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px}
+  footer{text-align:center;padding:20px;color:#666}
+  /* modal */
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;padding:16px;z-index:50}
+  .modal .box{background:#fff;border-radius:12px;max-width:600px;width:100%;padding:16px}
+  .row{display:flex;gap:8px;align-items:center}
+  input,select,textarea{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px}
+  .admin-panel{background:#fff;padding:12px;border-radius:10px;margin-bottom:12px}
+  .note{font-size:13px;color:#666}
+  .spin-area{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .wheel{width:220px;height:220px;border-radius:50%;background:conic-gradient(#ef476f 0 60%, #ffd166 0 70%, #06d6a0 0 80%, #118ab2 0 90%, #a219a9 0 100%);display:flex;align-items:center;justify-content:center;position:relative}
+  .wheel .center{background:#fff;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .pointer{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-bottom:18px solid #fff}
+  .small{font-size:13px;color:#666}
+  .qr{max-width:220px;border-radius:10px;box-shadow:0 8px 18px rgba(0,0,0,0.08)}
+  .top-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .banner{width:100%;height:140px;background:url('https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0162.jpeg') center/cover;border-radius:10px;box-shadow:0 6px 16px rgba(0,0,0,0.06)}
+  .hide{display:none}
+  @media(max-width:600px){.hero h1{font-size:18px}.wheel{width:180px;height:180px}}
 </style>
 </head>
 <body>
 
 <header>
-    <!-- Logo Free Fire mùa đông -->
-    <img src="https://i.imgur.com/Zl1M3pK.jpeg" alt="Logo FF">
-
-    <!-- QR MoMo bạn gửi -->
-    <div class="qr-box">
-        <img src="qr.jpg" alt="QR MoMo">
+  <div class="logo">
+    <img src="https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0161.jpeg" alt="shop logo">
+    <div>
+      <div class="title">ShopBinBoi</div>
+      <div class="note">Uy Tín — Giao Nick Nhanh</div>
     </div>
+  </div>
+  <nav>
+    <button id="productsNav">Sản phẩm</button>
+    <button id="howNav">Cách mua</button>
+    <button id="adminOpen">Admin</button>
+    <button class="cart-btn" id="cartBtn">Giỏ hàng 🛒 <span id="cartCount">0</span></button>
+  </nav>
 </header>
 
-<h2>🔥 SẢN PHẨM SHOP</h2>
+<section class="hero">
+  <div class="wrap">
+    <h1>Acc FF uy tín — Giá tốt</h1>
+    <p>Mua ngay, shop xác nhận và chuyển nick trong ngày. Thanh toán: MBbank / MoMo. Quay kim cương ảo: 150.000₫ / lượt (phải chuyển tiền trước).</p>
+    <div class="banner" title="Banner FF"></div>
+  </div>
+</section>
 
-<div class="grid" id="productsGrid"></div>
+<main class="wrap">
+  <div class="top-row" style="margin-bottom:12px;justify-content:space-between">
+    <div style="display:flex;gap:12px;align-items:center">
+      <div style="font-weight:700">Top nạp tháng</div>
+      <div class="note">1. Namdepchai — 24.950.000₫</div>
+      <div class="note">2. LongAK81 — 19.870.000₫</div>
+      <div class="note">3. Datgaming — 18.570.000₫</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <img class="qr" src="https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0163.jpeg" alt="qr" onerror="this.style.display='none'">
+      <div class="note">MB: 0347676833 — NGÂN MINH HIẾU</div>
+    </div>
+  </div>
 
-<h2>🎡 Vòng quay kim cương – 150.000 VNĐ / lượt</h2>
+  <!-- Admin area (toggle) -->
+  <div id="adminPanel" class="admin-panel hide">
+    <h3>Admin (binboi207)</h3>
+    <div class="row" style="margin-bottom:8px">
+      <input id="newTitle" placeholder="Tên sản phẩm">
+      <input id="newPrice" placeholder="Giá (VNĐ)" type="number">
+    </div>
+    <div class="row" style="margin-bottom:8px">
+      <input id="newDesc" placeholder="Mô tả (level...)">
+      <input id="newImg" placeholder="URL ảnh (raw link)">
+    </div>
+    <div style="display:flex;gap:8px">
+      <button id="addProductBtn" class="btn">Thêm sản phẩm</button>
+      <button id="logoutBtn" class="btn outline">Logout Admin</button>
+    </div>
+    <p class="note" style="margin-top:8px">Lưu ý: upload ảnh lên thư mục <code>/images</code> trên GitHub rồi lấy raw link và dán vào ô URL ảnh.</p>
+  </div>
 
-<div id="wheelBox">
-    <div id="wheel">Ấn quay</div><br>
-    <button class="btn" onclick="spinWheel()">Quay ngay</button>
+  <h2>Sản phẩm (acc)</h2>
+  <div id="productsGrid" class="grid"></div>
+
+  <hr style="margin:20px 0">
+
+  <h2>Cách mua</h2>
+  <ol>
+    <li>Chọn acc → Thêm vào giỏ → Thanh toán.</li>
+    <li>Chọn Momo/Chuyển khoản → Chuyển tiền theo nội dung: <strong>Mua Acc GiaRE.BinBoi</strong>. STK MB: <strong>0347676833 - NGÂN MINH HIẾU</strong>.</li>
+    <li>Gửi ảnh giao dịch vào Zalo/Facebook hoặc dùng nút Xác nhận thanh toán.</li>
+    <li>Shop xác nhận — chuyển nick và thông tin login.</li>
+  </ol>
+
+  <hr style="margin:20px 0">
+
+  <h2>Vòng quay kim cương (ảo)</h2>
+  <div class="card">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <div class="wheel" id="wheel">
+        <div class="pointer"></div>
+        <div class="center" id="wheelValue">Spin</div>
+      </div>
+      <div style="flex:1">
+        <p class="small">Giá 1 lượt: <strong>150.000₫</strong>. (Kim cương ảo — không rút thành tiền thật.)</p>
+        <p class="note">Các tỉ lệ: 0 KC (60%) — 560 KC (10%) — 3300 KC (10%) — 9999 KC (5%) — 100000 KC (1%).</p>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label><input type="checkbox" id="paidConfirm"> Đã chuyển tiền (Nội dung: <strong>Mua Acc GiaRE.BinBoi</strong>)</label>
+          <button id="spinBtn" class="btn">Quay ngay (150k)</button>
+        </div>
+        <p class="note">Số KC ảo của bạn: <strong id="userKC">0</strong> KC</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Cart modal -->
+<div id="cartModal" class="modal">
+  <div class="box">
+    <h3>Giỏ hàng</h3>
+    <div id="cartItems"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+      <div><strong>Tổng:</strong> <span id="cartTotal">0₫</span></div>
+      <div style="display:flex;gap:8px">
+        <button id="clearCart" class="btn outline">Xóa toàn bộ</button>
+        <button id="checkoutBtn" class="btn">Thanh toán</button>
+        <button id="closeCart" class="btn outline">Đóng</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<h2>💎 Gói rút 5000 KC</h2>
-<div style="text-align:center">
-    <button class="btn" onclick="rutKC()">Rút ngay 5000 KC</button>
+<!-- Checkout modal -->
+<div id="checkoutModal" class="modal">
+  <div class="box">
+    <h3>Xác nhận đơn hàng</h3>
+    <div id="checkoutSummary"></div>
+    <div style="margin-top:8px">
+      <input id="buyerName" placeholder="Tên người mua">
+      <input id="buyerPhone" placeholder="SĐT người mua">
+    </div>
+    <p class="note" style="margin-top:8px">Thanh toán qua MB Bank (STK: <strong>0347676833</strong> - <strong>NGÂN MINH HIẾU</strong>) hoặc MoMo 0347676833</p>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <a id="sendZalo" class="btn outline" href="#" target="_blank">Mở Zalo</a>
+      <button id="sendConfirm" class="btn">Gửi xác nhận (Mail)</button>
+      <button id="closeCheckout" class="btn outline">Đóng</button>
+    </div>
+  </div>
 </div>
+
+<footer>
+  <div>© <span id="year"></span> ShopBinBoi — FF Shop</div>
+</footer>
 
 <script>
 /* ===========================
-    DANH SÁCH SẢN PHẨM
-=========================== */
-const products = [
-  {id:"p1", title:"Acc VIP", price:980000, img:"https://i.imgur.com/B4lPxZb.jpeg"},
-  {id:"p2", title:"Acc VIP cổ", price:1500000, img:"https://i.imgur.com/B4lPxZb.jpeg"},
-  {id:"p3", title:"Acc VIP đồ nữ", price:1400000, img:"https://i.imgur.com/B4lPxZb.jpeg"},
-  {id:"p4", title:"Acc VIP S7 TVC mùa 1", price:2000000, img:"https://i.imgur.com/B4lPxZb.jpeg"},
+   Initial products (4)
+   You can edit or admin-add more
+   =========================== */
+let products = [
+  {
+    id: 'p1',
+    title: 'Acc VIP 980k',
+    price: 980000,
+    desc: 'Level 71 - Nhiều trang bị',
+    img: 'https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0162.jpeg'
+  },
+  {
+    id: 'p2',
+    title: 'Acc VIP Cổ 1.5tr',
+    price: 1500000,
+    desc: 'Level cao - acc cổ xịn',
+    img: 'https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0161.jpeg'
+  },
+  {
+    id: 'p3',
+    title: 'Acc VIP Chuyên đồ nữ 1.4tr',
+    price: 1400000,
+    desc: 'Chuyên đồ nữ - nhiều skin nữ',
+    img: 'https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0164.jpeg'
+  },
+  {
+    id: 'p4',
+    title: 'Acc VIP S7 TVC Mùa 1 2tr',
+    price: 2000000,
+    desc: 'TVC mùa 1 - S7 - acc xịn',
+    img: 'https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0165.jpeg'
+  }
 ];
 
-/* Render sản phẩm */
-const grid = document.getElementById("productsGrid");
-products.forEach(p=>{
-    grid.innerHTML += `
-        <div class="card">
-            <img src="${p.img}">
-            <h3>${p.title}</h3>
-            <p>Giá: ${p.price.toLocaleString()}đ</p>
-            <button class="btn">Mua ngay</button>
+/* ===== utilities ===== */
+function formatMoney(v){
+  if(typeof v!=='number') v = Number(v)||0;
+  return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "₫";
+}
+
+/* ===== render products ===== */
+const grid = document.getElementById('productsGrid');
+function renderProducts(){
+  grid.innerHTML = '';
+  products.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${p.img}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/400x240?text=No+Image'">
+      <h4>${p.title}</h4>
+      <p class="note">${p.desc}</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <div class="price">${formatMoney(p.price)}</div>
+        <div class="actions">
+          <button class="btn add" data-id="${p.id}">Thêm vào giỏ</button>
+          <button class="btn outline view" data-id="${p.id}">Xem</button>
         </div>
+      </div>
     `;
+    grid.appendChild(card);
+  });
+}
+renderProducts();
+
+/* ===== Cart localStorage ===== */
+let cart = JSON.parse(localStorage.getItem('shopCart') || '[]');
+const cartCount = document.getElementById('cartCount');
+const cartBtn = document.getElementById('cartBtn');
+const cartModal = document.getElementById('cartModal');
+const cartItemsWrap = document.getElementById('cartItems');
+const cartTotal = document.getElementById('cartTotal');
+
+function saveCart(){ localStorage.setItem('shopCart', JSON.stringify(cart)); renderCartCount(); }
+function renderCartCount(){ cartCount.textContent = cart.reduce((s,i)=>s+i.qty,0); }
+
+function renderCartModal(){
+  cartItemsWrap.innerHTML = '';
+  if(cart.length===0){ cartItemsWrap.innerHTML = '<p>Giỏ hàng trống.</p>'; cartTotal.textContent='0₫'; return; }
+  let total = 0;
+  cart.forEach(it=>{
+    const product = products.find(p=>p.id===it.id);
+    const row = document.createElement('div');
+    row.style.display='flex'; row.style.alignItems='center'; row.style.justifyContent='space-between'; row.style.marginBottom='8px';
+    row.innerHTML = `
+      <div style="display:flex;gap:10px;align-items:center">
+        <img src="${product.img}" style="width:60px;height:40px;object-fit:cover;border-radius:6px">
+        <div>
+          <div style="font-weight:700">${product.title}</div>
+          <div style="color:#666">${formatMoney(product.price)}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="muted" data-id="${it.id}">-</button>
+        <div>${it.qty}</div>
+        <button class="muted" data-id="${it.id}">+</button>
+        <button style="margin-left:8px;color:#a00;background:transparent;border:0;cursor:pointer" data-id="${it.id}">Xóa</button>
+      </div>
+    `;
+    cartItemsWrap.appendChild(row);
+    total += product.price * it.qty;
+    // attach handlers
+    row.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', function(){
+        const id = this.dataset.id;
+        if(this.textContent === '-') changeQty(id, -1);
+        else if(this.textContent === '+') changeQty(id, 1);
+        else if(this.textContent === 'Xóa') removeItem(id);
+      });
+    });
+  });
+  cartTotal.textContent = formatMoney(total);
+}
+
+function changeQty(id, delta){
+  const i = cart.find(ci=>ci.id===id);
+  if(!i) return;
+  i.qty += delta;
+  if(i.qty<=0) cart = cart.filter(ci=>ci.id!==id);
+  saveCart(); renderCartModal();
+}
+function removeItem(id){ cart = cart.filter(ci=>ci.id!==id); saveCart(); renderCartModal(); }
+function addToCart(id){
+  const exist = cart.find(c=>c.id===id);
+  if(exist) exist.qty++;
+  else cart.push({id, qty:1});
+  saveCart();
+  alert('Đã thêm vào giỏ');
+}
+
+document.body.addEventListener('click', function(e){
+  if(e.target.matches('.add')) addToCart(e.target.dataset.id);
+  if(e.target.matches('.view')){
+    const p = products.find(x=>x.id===e.target.dataset.id);
+    alert(p.title + '\\n' + p.desc + '\\nGiá: ' + formatMoney(p.price));
+  }
 });
 
-/* ===========================
-      VÒNG QUAY
-=========================== */
-function spinWheel(){
-    let wheel = document.getElementById("wheel");
-    wheel.style.transform = "rotate(1080deg)";
-    wheel.style.transition = "3s";
+cartBtn.addEventListener('click', function(){ cartModal.style.display='flex'; renderCartModal(); });
+document.getElementById('closeCart').addEventListener('click', ()=>cartModal.style.display='none');
+document.getElementById('clearCart').addEventListener('click', ()=>{
+  if(confirm('Xóa toàn bộ giỏ?')) { cart=[]; saveCart(); renderCartModal(); }
+});
 
-    setTimeout(()=>{
-        const rand = Math.random()*100;
-        let reward = 0;
+/* ===== Checkout ===== */
+const checkoutBtn = document.getElementById('checkoutBtn');
+const checkoutModal = document.getElementById('checkoutModal');
+const closeCheckout = document.getElementById('closeCheckout');
+const checkoutSummary = document.getElementById('checkoutSummary');
+const buyerName = document.getElementById('buyerName');
+const buyerPhone = document.getElementById('buyerPhone');
+const sendConfirm = document.getElementById('sendConfirm');
+const sendZalo = document.getElementById('sendZalo');
 
-        if(rand < 60) reward = 0;            // 60%
-        else if(rand < 70) reward = 560;     // 10%
-        else if(rand < 80) reward = 3300;    // 10%
-        else if(rand < 85) reward = 9999;    // 5%
-        else if(rand < 86) reward = 100000;  // 1% KC
-        else reward = 0;
+checkoutBtn.addEventListener('click', ()=>{
+  if(cart.length===0){ alert('Giỏ hàng trống.'); return; }
+  let html = '<ul>';
+  let total = 0;
+  cart.forEach(it=>{
+    const p = products.find(x=>x.id===it.id);
+    html += `<li>${p.title} × ${it.qty} — ${formatMoney(p.price*it.qty)}</li>`;
+    total += p.price*it.qty;
+  });
+  html += `</ul><p><strong>Tổng: ${formatMoney(total)}</strong></p>`;
+  checkoutSummary.innerHTML = html;
+  sendZalo.href = 'https://zalo.me/0347676833';
+  checkoutModal.style.display = 'flex';
+});
+closeCheckout.addEventListener('click', ()=>checkoutModal.style.display='none');
 
-        wheel.style.transition = "0s";
-        wheel.style.transform = "rotate(0deg)";
-        wheel.innerText = reward + " KC";
-        alert("Bạn nhận được: " + reward + " KC (ảo – không rút được)");
-    }, 3100);
+sendConfirm.addEventListener('click', ()=>{
+  const name = buyerName.value || 'Khách';
+  const phone = buyerPhone.value || '';
+  if(!name || !phone){ alert('Vui lòng nhập tên và số điện thoại.'); return; }
+  let subject = encodeURIComponent('Xác nhận thanh toán - ShopBinBoi');
+  let body = `Người mua: ${name}%0ASDT: ${phone}%0A%0AĐơn hàng:%0A`;
+  let total = 0;
+  cart.forEach(it=>{
+    const p = products.find(x=>x.id===it.id);
+    body += `- ${p.title} x${it.qty} = ${formatMoney(p.price*it.qty)}%0A`;
+    total += p.price*it.qty;
+  });
+  body += `%0ATổng: ${formatMoney(total)}%0A%0AThanh toán qua MB Bank (STK: 0347676833 - NGÂN MINH HIẾU) hoặc MoMo 0347676833%0A%0ANội dung: Mua Acc GiaRE.BinBoi%0A%0AKèm ảnh giao dịch tại zalo/facebook hoặc trả lời mail này.`;
+  window.location.href = `mailto:shopbinboi@example.com?subject=${subject}&body=${encodeURIComponent(decodeURIComponent(body))}`;
+});
+
+/* ===== Spin wheel (virtual diamonds) ===== */
+const spinBtn = document.getElementById('spinBtn');
+const paidConfirm = document.getElementById('paidConfirm');
+const wheel = document.getElementById('wheel');
+const wheelValue = document.getElementById('wheelValue');
+const userKCSpan = document.getElementById('userKC');
+
+let userKC = Number(localStorage.getItem('userKC')||0);
+userKCSpan.textContent = userKC;
+
+function saveKC(){ localStorage.setItem('userKC', userKC); userKCSpan.textContent = userKC; }
+
+spinBtn.addEventListener('click', ()=>{
+  if(!paidConfirm.checked){ alert('Vui lòng tick: Đã chuyển tiền (Nội dung: Mua Acc GiaRE.BinBoi) để xác nhận.'); return; }
+  // simulate payment cost (no real money charged here)
+  if(!confirm('Xác nhận: bạn đã chuyển 150.000₫ cho Shop? (nhấn OK nếu đã chuyển)')) return;
+  // spin
+  spinBtn.disabled = true;
+  wheelValue.textContent = '...';
+  // choose outcome by probability
+  const rnd = Math.random();
+  // probabilities: 60% -> 0, 10% -> 560, 10% -> 3300, 5% -> 9999, 1% -> 100000 (rest small)
+  let outcomeKC = 0, label='0 KC';
+  if(rnd < 0.60){ outcomeKC = 0; label='0 KC'; }
+  else if(rnd < 0.70){ outcomeKC = 560; label='560 KC'; }
+  else if(rnd < 0.80){ outcomeKC = 3300; label='3.300 KC'; }
+  else if(rnd < 0.85){ outcomeKC = 9999; label='9.999 KC'; }
+  else if(rnd < 0.86){ outcomeKC = 100000; label='100.000 KC'; }
+  else { outcomeKC = 0; label='0 KC'; } // fallback
+
+  // animate wheel rotation
+  const spins = 6 + Math.floor(Math.random()*4);
+  const deg = spins*360 + Math.floor(Math.random()*360);
+  wheel.style.transition = 'transform 3s cubic-bezier(.2,.9,.2,1)';
+  wheel.style.transform = `rotate(${deg}deg)`;
+  setTimeout(()=>{
+    wheel.style.transition = '';
+    wheel.style.transform = '';
+    // give reward
+    userKC += outcomeKC;
+    saveKC();
+    wheelValue.textContent = label;
+    alert('Kết quả: ' + label + '\\n(Đã cộng vào TK KC ảo của bạn.)');
+    spinBtn.disabled = false;
+    // optionally uncheck paidConfirm to force new payment
+    paidConfirm.checked = false;
+  }, 3200);
+});
+
+/* ===== Admin login (simple client-side) ===== */
+const adminOpen = document.getElementById('adminOpen');
+const adminPanel = document.getElementById('adminPanel');
+let adminLogged = sessionStorage.getItem('adminLogged') === '1';
+
+function showAdmin(){
+  if(adminLogged){ adminPanel.classList.remove('hide'); return; }
+  const user = prompt('Admin user:');
+  const pass = prompt('Admin pass:');
+  if(user === 'binboi207' && pass === 'mhieu2007@'){
+    adminLogged = true; sessionStorage.setItem('adminLogged','1'); adminPanel.classList.remove('hide');
+  } else alert('Sai thông tin admin');
 }
+adminOpen.addEventListener('click', showAdmin);
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  adminLogged=false; sessionStorage.removeItem('adminLogged'); adminPanel.classList.add('hide');
+});
 
-/* ===========================
-      RÚT KC
-=========================== */
-function rutKC(){
-    alert("Bạn đã rút thành công 5000 KC ảo!");
-}
+/* add product */
+document.getElementById('addProductBtn').addEventListener('click', ()=>{
+  if(!adminLogged){ alert('Cần đăng nhập admin'); return; }
+  const t=document.getElementById('newTitle').value.trim();
+  const pr=Number(document.getElementById('newPrice').value)||0;
+  const d=document.getElementById('newDesc').value.trim();
+  const img=document.getElementById('newImg').value.trim();
+  if(!t||!pr){ alert('Nhập tên và giá'); return; }
+  const id = 'p'+(Date.now());
+  products.push({id,title:t,price:pr,desc:d,img:img||'https://via.placeholder.com/400x240?text=No+Image'});
+  renderProducts();
+  alert('Đã thêm sản phẩm. (Ảnh dùng link raw từ GitHub hoặc URL trực tiếp)');
+  // clear
+  document.getElementById('newTitle').value=''; document.getElementById('newPrice').value=''; document.getElementById('newDesc').value=''; document.getElementById('newImg').value='';
+});
+
+/* navigation */
+document.getElementById('productsNav').addEventListener('click', ()=>window.scrollTo({top:400,behavior:'smooth'}));
+document.getElementById('howNav').addEventListener('click', ()=>window.scrollTo({top:800,behavior:'smooth'}));
+
+/* init */
+saveCart = saveCart || function(){ localStorage.setItem('shopCart', JSON.stringify(cart)); renderCartCount(); };
+renderCartCount();
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* close modals when clicking outside content */
+window.addEventListener('click', function(e){
+  if(e.target === cartModal) cartModal.style.display='none';
+  if(e.target === checkoutModal) checkoutModal.style.display='none';
+});
 </script>
-
 </body>
 </html>
