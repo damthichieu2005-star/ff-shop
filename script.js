@@ -1,6 +1,5 @@
 // Basic shop data (sample). Replace images in images/ folder and change product data as needed.
 const products = [
-const products = [
   {
     id: "acc1",
     title: "Acc VIP 1 - 1.2tr",
