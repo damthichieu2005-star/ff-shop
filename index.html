@@ -1,73 +1,75 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ShopBinBoi - Bán ACC Free Fire</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ShopBinBoi</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header class="top">
+    <div class="brand">ShopBinBoi</div>
+    <div class="actions">
+      <a class="admin-link" href="admin.html">Admin</a>
+      <button id="cartBtn">Giỏ (<span id="cartCount">0</span>)</button>
+    </div>
+  </header>
 
-<header class="top">
-  <div class="wrap">
-    <div class="left">
-      <img src="images/logo.png" class="logo" onerror="this.style.display='none'">
-      <div>
-        <h1>ShopBinBoi</h1>
-        <div class="meta" id="bankInfo">MB: 0347676833 - NGÂN MINH HIẾU</div>
+  <main class="container">
+    <section class="bank">
+      <p><strong>MB:</strong> <a href="tel:0347676833">0347676833</a> — NGÂN MINH HIẾU</p>
+      <p>Nội dung chuyển khoản: <strong>Mua Acc GiaRE.BinBoi</strong></p>
+    </section>
+
+    <section id="productsGrid" class="products">
+      <!-- sản phẩm sẽ render bởi app.js -->
+    </section>
+
+    <section class="qr-area">
+      <h3>QR thanh toán</h3>
+      <img id="qrImg" src="images/qr-placeholder.jpg" alt="QR thanh toán" style="max-width:220px;">
+      <p>Quét để chuyển tiền (sau khi chuyển sẽ được xác nhận và giao acc).</p>
+    </section>
+  </main>
+
+  <!-- CART MODAL -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <button id="closeCart">Đóng</button>
+      <h3>Giỏ hàng</h3>
+      <div id="cartItems"></div>
+      <div class="cart-footer">
+        <div>Tổng: <span id="cartTotal">0₫</span></div>
+        <button id="checkoutBtn">Thanh toán (Mở hướng dẫn chuyển)</button>
+        <button id="clearCart">Xóa</button>
       </div>
     </div>
-    <div class="right">
-      <button id="openAdmin" class="btn outline">Admin</button>
-      <button id="openCart" class="btn">Giỏ (<span id="cartCount">0</span>)</button>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutModal" class="modal">
+    <div class="modal-content">
+      <button id="closeCheckout">Đóng</button>
+      <h3>Thanh toán - Hướng dẫn</h3>
+      <p>Chuyển tiền vào MB 0347676833 (NGÂN MINH HIẾU). Nội dung: <strong>Mua Acc GiaRE.BinBoi</strong></p>
+      <p>Sau khi chuyển gửi ảnh giao dịch vào Zalo/Facebook, admin sẽ xác nhận và giao acc.</p>
+      <div id="checkoutSummary"></div>
     </div>
   </div>
-</header>
 
-<main class="wrap">
-  <section class="hero">
-    <img id="bannerImg" src="images/banner.jpg" class="banner" onerror="this.style.display='none'">
-    <p class="note">Nội dung chuyển khoản: <strong>Mua Acc GiaRE.BinBoi</strong></p>
-    <img id="qrImg" src="images/qr.png" class="qr" alt="QR thanh toán" onerror="this.style.display='none'">
-  </section>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
 
-  <section>
-    <h2>Sản phẩm</h2>
-    <div id="productsGrid" class="grid"></div>
-  </section>
-</main>
+  <!-- paste cấu hình -->
+  <script>
+    // === PASTE FIREBASE CONFIG HERE ===
+    // const firebaseConfig = { apiKey: "...", authDomain: "...", projectId: "...", storageBucket: "...", messagingSenderId: "...", appId: "..." };
+    // firebase.initializeApp(firebaseConfig);
+  </script>
 
-<!-- CART / CHECKOUT modal -->
-<div id="cartModal" class="modal">
-  <div class="modal-box">
-    <h3>Giỏ hàng</h3>
-    <div id="cartItems"></div>
-    <p><strong>Tổng: </strong><span id="cartTotal">0₫</span></p>
-    <button id="checkoutBtn" class="btn primary">Thanh toán</button>
-    <button id="closeCart" class="btn outline">Đóng</button>
-  </div>
-</div>
-
-<!-- Checkout confirm -->
-<div id="checkoutModal" class="modal">
-  <div class="modal-box">
-    <h3>Xác nhận đơn hàng</h3>
-    <div id="checkoutSummary"></div>
-    <input id="buyerName" placeholder="Họ tên" />
-    <input id="buyerPhone" placeholder="Số điện thoại (Zalo)" />
-    <p class="small">Sau khi chuyển khoản, gửi ảnh hóa đơn để shop duyệt. Bảo hành: <strong>15 ngày</strong> kể từ ngày giao.</p>
-    <div style="display:flex;gap:8px">
-      <a id="zaloLink" href="#" target="_blank" class="btn outline">Mở Zalo</a>
-      <button id="sendOrder" class="btn primary">Gửi xác nhận (Mail)</button>
-      <button id="closeCheckout" class="btn outline">Đóng</button>
-    </div>
-  </div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
