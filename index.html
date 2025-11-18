@@ -1,244 +1,53 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ShopBinBoi — Acc FF & KC</title>
-<link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Bán Acc FF</title>
+    <style>
+        body { font-family: Arial; background: #111; color: white; padding: 20px; }
+        .item { background: #222; padding: 15px; margin-bottom: 10px; border-radius: 10px; }
+        img { width: 100%; border-radius: 10px; }
+        .price { color: yellow; font-size: 20px; font-weight: bold; }
+    </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="wrap">
-    <img id="siteLogo" src="images/logo.png" alt="ShopBinBoi" class="logo">
-    <div class="title-area">
-      <h1>ShopBinBoi</h1>
-      <div class="subtitle">Acc Free Fire uy tín — Thanh toán MB / MoMo</div>
-    </div>
-    <div class="header-right">
-      <div class="bank">MB: <b>0347676833</b> — NGÂN MINH HIẾU</div>
-      <button id="cartBtn" class="btn">Giỏ (<span id="cartCount">0</span>)</button>
-    </div>
-  </div>
-</header>
+    <h1>SHOP BÁN ACC FREE FIRE</h1>
+    <div id="product-list"></div>
 
-<main class="wrap">
-  <section class="hero">
-    <img class="banner" src="images/banner.jpg" alt="banner">
-    <p class="note">Nội dung chuyển khoản: <b>Mua Acc GiaRE.BinBoi</b></p>
-    <img src="images/qr.png" class="qr" alt="QR thanh toán">
-  </section>
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  <section id="productsSection">
-    <h2>Sản phẩm</h2>
-    <div id="productsGrid" class="grid"></div>
-  </section>
-</main>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBvwvKC1yEiMQDyLpmq6uAhxcleQwFx7E",
+            authDomain: "ff-shop-e7e08.firebaseapp.com",
+            projectId: "ff-shop-e7e08",
+            storageBucket: "ff-shop-e7e08.appspot.com",
+            messagingSenderId: "692245023370",
+            appId: "1:692245023370:web:b04318a43b46938b4fb3e1",
+            measurementId: "G-1KVQNMJJMH"
+        };
 
-<!-- Cart modal -->
-<div id="cartModal" class="modal">
-  <div class="modal-box">
-    <h3>Giỏ hàng</h3>
-    <div id="cartItems"></div>
-    <div class="cart-footer">
-      <div><strong>Tổng:</strong> <span id="cartTotal">0₫</span></div>
-      <div class="cart-actions">
-        <button id="clearCart" class="btn outline">Xóa</button>
-        <button id="checkoutBtn" class="btn">Thanh toán</button>
-        <button id="closeCart" class="btn outline">Đóng</button>
-      </div>
-    </div>
-  </div>
-</div>
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-<!-- Checkout modal -->
-<div id="checkoutModal" class="modal">
-  <div class="modal-box">
-    <h3>Xác nhận đơn</h3>
-    <div id="checkoutSummary"></div>
-    <input id="buyerName" placeholder="Họ tên" />
-    <input id="buyerPhone" placeholder="Số điện thoại" />
-    <p class="note">Thanh toán MB: <b>0347676833 - NGÂN MINH HIẾU</b> — Nội dung: <b>Mua Acc GiaRE.BinBoi</b></p>
-    <div style="display:flex;gap:8px;margin-top:10px">
-      <a id="sendZalo" class="btn outline" href="#" target="_blank">Mở Zalo</a>
-      <button id="sendConfirm" class="btn">Gửi xác nhận (mail)</button>
-      <button id="closeCheckout" class="btn outline">Đóng</button>
-    </div>
-  </div>
-</div>
+        const productList = document.getElementById("product-list");
 
-<footer class="site-footer">
-  © <span id="year"></span> ShopBinBoi — Liên hệ: Zalo/FB: 0347676833
-</footer>
-
-<script>
-/* CONFIG: đặt tên GitHub owner/repo để index có thể load products.json từ raw (tùy bạn) */
-const GH_OWNER = 'YOUR_USER'; // <-- thay bằng GitHub username của bạn (vd: damthichieu2005-star)
-const GH_REPO  = 'YOUR_REPO'; // <-- thay bằng repo name (vd: ff-shop)
-const GH_BRANCH = 'main';
-const PRODUCTS_RAW = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/data/products.json`;
-
-/* ---------- UTIL ---------- */
-function formatMoney(v){ if(typeof v!=='number') v=Number(v)||0; return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")+'₫'; }
-
-/* ---------- LOAD PRODUCTS (try remote then fallback to local variable) ---------- */
-async function fetchProducts(){
-  try{
-    const r = await fetch(PRODUCTS_RAW + '?t=' + Date.now());
-    if(!r.ok) throw new Error('no remote');
-    const data = await r.json();
-    return data;
-  }catch(e){
-    // fallback sample (if remote not available)
-    return [
-      {"id":"p1","name":"Acc VIP 980k","price":980000,"desc":"Acc VIP - nhiều skin","img":"images/acc1.jpg"},
-      {"id":"p2","name":"Acc VIP Cổ 1.5tr","price":1500000,"desc":"Acc cổ - đồ hiếm","img":"images/acc2.jpg"},
-      {"id":"p3","name":"Acc đồ nữ 1.4tr","price":1400000,"desc":"Chuyên đồ nữ","img":"images/acc3.jpg"},
-      {"id":"p4","name":"Acc S7 TVC 2tr","price":2000000,"desc":"S7 TVC mùa 1","img":"images/acc4.jpg"}
-    ];
-  }
-}
-
-/* ---------- RENDER ---------- */
-const grid = document.getElementById('productsGrid');
-let PRODUCTS = [];
-async function render(){
-  PRODUCTS = await fetchProducts();
-  grid.innerHTML = '';
-  PRODUCTS.forEach(p=>{
-    const el = document.createElement('div');
-    el.className='card';
-    el.innerHTML = `
-      <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x240?text=No+Image'">
-      <h4>${p.name}</h4>
-      <div class="desc">${p.desc||''}</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-        <div class="price">${formatMoney(p.price)}</div>
-        <div>
-          <button class="btn add" data-id="${p.id}">Thêm</button>
-          <button class="btn outline view" data-id="${p.id}">Xem</button>
-        </div>
-      </div>`;
-    grid.appendChild(el);
-  });
-}
-render();
-
-/* ---------- CART (localStorage) ---------- */
-let cart = JSON.parse(localStorage.getItem('shopCart')||'[]');
-const cartCount = document.getElementById('cartCount');
-const cartModal = document.getElementById('cartModal');
-const cartItemsWrap = document.getElementById('cartItems');
-const cartTotal = document.getElementById('cartTotal');
-
-function saveCart(){ localStorage.setItem('shopCart', JSON.stringify(cart)); renderCartCount(); }
-function renderCartCount(){ cartCount.textContent = cart.reduce((s,i)=>s+i.qty,0); }
-function addToCart(id){
-  const ex = cart.find(c=>c.id===id);
-  if(ex) ex.qty++; else cart.push({id,qty:1});
-  saveCart(); alert('Đã thêm vào giỏ');
-}
-document.body.addEventListener('click', e=>{
-  if(e.target.matches('.add')) addToCart(e.target.dataset.id);
-  if(e.target.matches('.view')){
-    const p = PRODUCTS.find(x=>x.id===e.target.dataset.id);
-    alert(p.name + '\n' + (p.desc||'') + '\nGiá: ' + formatMoney(p.price));
-  }
-});
-
-/* Cart modal */
-document.getElementById('cartBtn').addEventListener('click', ()=>{ cartModal.style.display='flex'; renderCartModal();});
-document.getElementById('closeCart').addEventListener('click', ()=>cartModal.style.display='none');
-document.getElementById('clearCart').addEventListener('click', ()=>{ if(confirm('Xóa toàn bộ giỏ?')) { cart=[]; saveCart(); renderCartModal(); }});
-
-function renderCartModal(){
-  cartItemsWrap.innerHTML = '';
-  if(cart.length===0){ cartItemsWrap.innerHTML = '<p>Giỏ hàng trống.</p>'; cartTotal.textContent = '0₫'; return; }
-  let total=0;
-  cart.forEach(it=>{
-    const p = PRODUCTS.find(x=>x.id===it.id);
-    cartItemsWrap.innerHTML += `<div style="display:flex;justify-content:space-between;margin-bottom:8px">
-      <div><b>${p.name}</b><div class="small">${formatMoney(p.price)}</div></div>
-      <div>${it.qty} × ${formatMoney(p.price*it.qty)}</div>
-    </div>`;
-    total += p.price*it.qty;
-  });
-  cartTotal.textContent = formatMoney(total);
-}
-
-/* Checkout */
-const checkoutModal = document.getElementById('checkoutModal');
-const checkoutBtn = document.getElementById('checkoutBtn');
-const closeCheckout = document.getElementById('closeCheckout');
-const checkoutSummary = document.getElementById('checkoutSummary');
-const buyerName = document.getElementById('buyerName');
-const buyerPhone = document.getElementById('buyerPhone');
-const sendConfirm = document.getElementById('sendConfirm');
-const sendZalo = document.getElementById('sendZalo');
-
-checkoutBtn.addEventListener('click', ()=>{
-  if(cart.length===0){ alert('Giỏ hàng trống.'); return; }
-  let html = '<ul>';
-  let total=0;
-  cart.forEach(it=>{
-    const p = PRODUCTS.find(x=>x.id===it.id);
-    html += `<li>${p.name} x${it.qty} — ${formatMoney(p.price*it.qty)}</li>`;
-    total += p.price*it.qty;
-  });
-  html += `</ul><p><strong>Tổng: ${formatMoney(total)}</strong></p><p>Thanh toán MB: 0347676833 (Ngân Minh Hiếu). Nội dung: Mua Acc GiaRE.BinBoi</p>`;
-  checkoutSummary.innerHTML = html;
-  sendZalo.href = 'https://zalo.me/0347676833';
-  checkoutModal.style.display = 'flex';
-});
-closeCheckout.addEventListener('click', ()=>checkoutModal.style.display='none');
-
-sendConfirm.addEventListener('click', ()=>{
-  const name = buyerName.value || 'Khách';
-  const phone = buyerPhone.value || '';
-  if(!phone){ alert('Nhập số điện thoại'); return; }
-  let subject = encodeURIComponent('Xác nhận thanh toán - ShopBinBoi');
-  let body = `Người mua: ${name}%0ASĐT: ${phone}%0A%0AĐơn hàng:%0A`;
-  let total=0;
-  cart.forEach(it=>{
-    const p = PRODUCTS.find(x=>x.id===it.id);
-    body += `- ${p.name} x${it.qty} = ${formatMoney(p.price*it.qty)}%0A`;
-    total += p.price*it.qty;
-  });
-  body += `%0ATổng: ${formatMoney(total)}%0A%0AThanh toán qua MB Bank (0347676833 - NGÂN MINH HIẾU)%0ANội dung: Mua Acc GiaRE.BinBoi`;
-  window.location.href = `mailto:shopbinboi@example.com?subject=${subject}&body=${body}`;
-});
-
-/* init */
-renderCartCount();
-document.getElementById('year').textContent = new Date().getFullYear();
-
-/* close modals on outside click */
-window.addEventListener('click', function(e){
-  if(e.target === cartModal) cartModal.style.display='none';
-  if(e.target === checkoutModal) checkoutModal.style.display='none';
-});
-</script>
-
-<style>
-/* minimal inline css for index if style.css missing */
-:root{--accent:#ff6b6b}
-body{font-family:Arial,Helvetica,sans-serif;background:#0b0b0b;color:#fff;margin:0}
-.wrap{max-width:1100px;margin:0 auto;padding:16px}
-.site-header{background:#071021;padding:12px;color:#fff;display:flex;align-items:center;gap:12px}
-.logo{width:56px;height:56px;border-radius:8px;object-fit:cover}
-.title-area h1{margin:0}
-.banner{width:100%;height:200px;object-fit:cover;border-radius:10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px}
-.card{background:#0f1724;padding:12px;border-radius:10px}
-.card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
-.btn{background:var(--accent);color:#111;border:0;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:700}
-.btn.outline{background:transparent;border:1px solid rgba(255,255,255,0.08);color:#fff}
-.price{color:#ffd166;font-weight:800}
-.modal{display:none;position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:100}
-.modal-box{background:#0b0b0d;padding:18px;border-radius:10px;width:90%;max-width:520px}
-.cart-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
-.small{font-size:13px;color:#9aa}
-.site-footer{padding:12px;text-align:center;color:#999;background:#050505;margin-top:18px}
-.qr{width:180px;display:block;margin:12px auto}
-</style>
+        onValue(ref(db, "products"), snapshot => {
+            productList.innerHTML = "";
+            snapshot.forEach(child => {
+                const item = child.val();
+                productList.innerHTML += `
+                    <div class="item">
+                        <img src="${item.image}">
+                        <h2>${item.name}</h2>
+                        <p class="price">${item.price} VNĐ</p>
+                    </div>
+                `;
+            });
+        });
+    </script>
 </body>
 </html>
