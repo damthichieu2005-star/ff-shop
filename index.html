@@ -1,57 +1,73 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ShopBinBoi - Bán acc Free Fire</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ShopBinBoi - Bán ACC Free Fire</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="top">
-    <div class="brand">
-      <img src="images/banner.jpg" alt="ShopBinBoi" class="logo" onerror="this.style.display='none'">
+
+<header class="top">
+  <div class="wrap">
+    <div class="left">
+      <img src="images/logo.png" class="logo" onerror="this.style.display='none'">
       <div>
         <h1>ShopBinBoi</h1>
-        <div class="meta">Thanh toán MB / MoMo — MB: <a href="tel:0347676833">0347676833</a> — NGÂN MINH HIẾU</div>
+        <div class="meta" id="bankInfo">MB: 0347676833 - NGÂN MINH HIẾU</div>
       </div>
     </div>
-    <a href="admin.html" class="admin-link">Admin</a>
-  </header>
-
-  <main class="container">
-    <section class="payment">
-      <h2>Nội dung chuyển khoản</h2>
-      <p class="transfer">Nội dung: <strong>Mua Acc GiaRE.BinBoi</strong></p>
-      <div class="qr-wrap">
-        <img src="images/qr.png" alt="QR Thanh toán" />
-      </div>
-    </section>
-
-    <section id="productsSection">
-      <h2>Sản phẩm</h2>
-      <div id="productsGrid" class="grid"></div>
-    </section>
-  </main>
-
-  <!-- Modal đơn hàng -->
-  <div id="checkoutModal" class="modal">
-    <div class="modal-body">
-      <button class="close" id="closeCheckout">×</button>
-      <h3>Thanh toán — Xác nhận đơn</h3>
-      <div id="checkoutSummary"></div>
-
-      <div class="form">
-        <label>Tên</label><input id="buyerName" placeholder="Tên người mua">
-        <label>SĐT (Zalo)</label><input id="buyerPhone" placeholder="Số điện thoại">
-      </div>
-
-      <div class="flex-between">
-        <button id="sendConfirm" class="btn primary">Gửi xác nhận (email)</button>
-        <a id="sendZalo" class="btn outline" href="#" target="_blank">Mở Zalo</a>
-      </div>
+    <div class="right">
+      <button id="openAdmin" class="btn outline">Admin</button>
+      <button id="openCart" class="btn">Giỏ (<span id="cartCount">0</span>)</button>
     </div>
   </div>
+</header>
 
-  <script src="app.js"></script>
+<main class="wrap">
+  <section class="hero">
+    <img id="bannerImg" src="images/banner.jpg" class="banner" onerror="this.style.display='none'">
+    <p class="note">Nội dung chuyển khoản: <strong>Mua Acc GiaRE.BinBoi</strong></p>
+    <img id="qrImg" src="images/qr.png" class="qr" alt="QR thanh toán" onerror="this.style.display='none'">
+  </section>
+
+  <section>
+    <h2>Sản phẩm</h2>
+    <div id="productsGrid" class="grid"></div>
+  </section>
+</main>
+
+<!-- CART / CHECKOUT modal -->
+<div id="cartModal" class="modal">
+  <div class="modal-box">
+    <h3>Giỏ hàng</h3>
+    <div id="cartItems"></div>
+    <p><strong>Tổng: </strong><span id="cartTotal">0₫</span></p>
+    <button id="checkoutBtn" class="btn primary">Thanh toán</button>
+    <button id="closeCart" class="btn outline">Đóng</button>
+  </div>
+</div>
+
+<!-- Checkout confirm -->
+<div id="checkoutModal" class="modal">
+  <div class="modal-box">
+    <h3>Xác nhận đơn hàng</h3>
+    <div id="checkoutSummary"></div>
+    <input id="buyerName" placeholder="Họ tên" />
+    <input id="buyerPhone" placeholder="Số điện thoại (Zalo)" />
+    <p class="small">Sau khi chuyển khoản, gửi ảnh hóa đơn để shop duyệt. Bảo hành: <strong>15 ngày</strong> kể từ ngày giao.</p>
+    <div style="display:flex;gap:8px">
+      <a id="zaloLink" href="#" target="_blank" class="btn outline">Mở Zalo</a>
+      <button id="sendOrder" class="btn primary">Gửi xác nhận (Mail)</button>
+      <button id="closeCheckout" class="btn outline">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+<script src="app.js"></script>
 </body>
 </html>
