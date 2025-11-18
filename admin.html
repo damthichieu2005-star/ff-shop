@@ -1,66 +1,152 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Admin - ShopBinBoi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
 <link rel="stylesheet" href="style.css">
+<style>
+.admin-box {
+  background:#12141c;
+  padding:15px;
+  border-radius:10px;
+}
+
+input, textarea {
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  margin-bottom:10px;
+  border-radius:6px;
+}
+
+.prod-item {
+  background:#1b1e29;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px;
+}
+</style>
 </head>
 <body>
 
-<main class="admin-wrap">
-  <h1>ADMIN - ShopBinBoi</h1>
+<h2>Admin Quản lý Shop</h2>
 
-  <div id="loginBox" class="card">
-    <h3>Đăng nhập Admin</h3>
-    <input id="adminUser" placeholder="Username">
-    <input id="adminPass" type="password" placeholder="Password">
-    <div style="display:flex;gap:8px">
-      <button id="btnLogin" class="btn primary">Đăng nhập</button>
-      <button id="btnClear" class="btn outline">Xóa</button>
-    </div>
-    <p class="muted">User: <strong>binboi207</strong> | Pass: <strong>mhieu2007@</strong></p>
-  </div>
+<div class="admin-box">
+  <h3>Thông tin thanh toán</h3>
+  <label>Số MB Bank</label>
+  <input id="mb" placeholder="Ví dụ: 0347676833">
 
-  <div id="adminPanel" style="display:none">
-    <div class="card">
-      <h3>Bank / QR / Thông tin shop</h3>
-      <input id="bankText" placeholder="Ví dụ: MB - 0347676833 - NGÂN MINH HIẾU">
-      <label>Upload QR (image)</label>
-      <input type="file" id="qrFile" accept="image/*">
-      <button id="saveConfig" class="btn">Lưu cấu hình & upload QR</button>
-      <p id="configMsg" class="muted"></p>
-    </div>
+  <label>Tên chủ TK</label>
+  <input id="name" placeholder="Ví dụ: NGÂN MINH HIẾU">
 
-    <div class="card">
-      <h3>Thêm / Sửa sản phẩm</h3>
-      <input id="p_title" placeholder="Tiêu đề">
-      <input id="p_price" placeholder="Giá (VNĐ)">
-      <textarea id="p_desc" placeholder="Mô tả"></textarea>
-      <label>Ảnh sản phẩm</label>
-      <input type="file" id="p_file" accept="image/*">
-      <input id="p_img" placeholder="Hoặc dán URL image (nếu có)">
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button id="btnSaveProduct" class="btn primary">Lưu sản phẩm</button>
-        <button id="btnClearForm" class="btn outline">Xóa form</button>
-      </div>
-    </div>
+  <label>Tải ảnh QR mới</label>
+  <input type="file" id="qrInput" accept="image/*">
 
-    <div class="card">
-      <h3>Danh sách sản phẩm</h3>
-      <div id="adminProducts"></div>
-    </div>
+  <button onclick="saveBank()">Lưu</button>
+</div>
 
-    <div style="margin-top:12px">
-      <button id="btnLogout" class="btn muted">Đăng xuất</button>
-    </div>
-  </div>
-</main>
+<hr>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+<div class="admin-box">
+  <h3>Thêm Sản phẩm</h3>
+  <input id="pName" placeholder="Tên acc">
+  <input id="pDesc" placeholder="Mô tả">
+  <input id="pPrice" placeholder="Giá (vd: 980000)">
+  <label>Ảnh sản phẩm</label>
+  <input type="file" id="pImg" accept="image/*">
+  <button onclick="addProduct()">Thêm</button>
+</div>
 
-<script src="app.js"></script>
+<h3>Danh sách sản phẩm</h3>
+<div id="prodList"></div>
+
+<script>
+// === LOAD DATA ===
+let products = JSON.parse(localStorage.getItem("products")) || [];
+let bank = JSON.parse(localStorage.getItem("bank")) || {
+    mb: "0347676833",
+    name: "NGÂN MINH HIẾU",
+    qr: "qr.png"
+};
+
+// === Lưu thông tin ngân hàng ===
+function saveBank() {
+    let file = document.getElementById("qrInput").files[0];
+
+    bank.mb = document.getElementById("mb").value;
+    bank.name = document.getElementById("name").value;
+
+    // nếu có upload qr mới
+    if (file) {
+        let reader = new FileReader();
+        reader.onload = () => {
+            bank.qr = reader.result;
+            localStorage.setItem("bank", JSON.stringify(bank));
+            alert("Đã lưu thông tin + QR mới");
+        };
+        reader.readAsDataURL(file);
+    } else {
+        localStorage.setItem("bank", JSON.stringify(bank));
+        alert("Đã lưu thông tin");
+    }
+}
+
+// === Thêm sản phẩm ===
+function addProduct() {
+    let name = document.getElementById("pName").value;
+    let desc = document.getElementById("pDesc").value;
+    let price = Number(document.getElementById("pPrice").value);
+    let imgFile = document.getElementById("pImg").files[0];
+
+    if (!name || !desc || !price || !imgFile) {
+        alert("Nhập đầy đủ thông tin!");
+        return;
+    }
+
+    let reader = new FileReader();
+    reader.onload = () => {
+        products.push({
+            name, desc, price,
+            img: reader.result
+        });
+        localStorage.setItem("products", JSON.stringify(products));
+        renderProducts();
+        alert("Đã thêm sản phẩm!");
+    };
+    reader.readAsDataURL(imgFile);
+}
+
+// === Xóa sản phẩm ===
+function deleteProduct(i) {
+    products.splice(i, 1);
+    localStorage.setItem("products", JSON.stringify(products));
+    renderProducts();
+}
+
+// === Hiển thị danh sách sản phẩm ===
+function renderProducts() {
+    const box = document.getElementById("prodList");
+    box.innerHTML = "";
+
+    products.forEach((p, i) => {
+        box.innerHTML += `
+        <div class="prod-item">
+            <img src="${p.img}" style="width:100%; border-radius:6px;">
+            <p><b>${p.name}</b></p>
+            <p>${p.desc}</p>
+            <p>Giá: ${p.price.toLocaleString("vi-VN")}đ</p>
+            <button style="background:#ff4444" onclick="deleteProduct(${i})">Xóa</button>
+        </div>`;
+    });
+}
+
+// === hiển thị thông tin bank lên input ===
+document.getElementById("mb").value = bank.mb;
+document.getElementById("name").value = bank.name;
+
+renderProducts();
+</script>
+
 </body>
 </html>
