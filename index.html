@@ -1,53 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Bán Acc FF</title>
-    <style>
-        body { font-family: Arial; background: #111; color: white; padding: 20px; }
-        .item { background: #222; padding: 15px; margin-bottom: 10px; border-radius: 10px; }
-        img { width: 100%; border-radius: 10px; }
-        .price { color: yellow; font-size: 20px; font-weight: bold; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ShopBinBoi - Bán acc Free Fire</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h1>SHOP BÁN ACC FREE FIRE</h1>
-    <div id="product-list"></div>
+  <header class="top">
+    <div class="brand">
+      <img src="images/banner.jpg" alt="ShopBinBoi" class="logo" onerror="this.style.display='none'">
+      <div>
+        <h1>ShopBinBoi</h1>
+        <div class="meta">Thanh toán MB / MoMo — MB: <a href="tel:0347676833">0347676833</a> — NGÂN MINH HIẾU</div>
+      </div>
+    </div>
+    <a href="admin.html" class="admin-link">Admin</a>
+  </header>
 
-    <!-- Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  <main class="container">
+    <section class="payment">
+      <h2>Nội dung chuyển khoản</h2>
+      <p class="transfer">Nội dung: <strong>Mua Acc GiaRE.BinBoi</strong></p>
+      <div class="qr-wrap">
+        <img src="images/qr.png" alt="QR Thanh toán" />
+      </div>
+    </section>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBvwvKC1yEiMQDyLpmq6uAhxcleQwFx7E",
-            authDomain: "ff-shop-e7e08.firebaseapp.com",
-            projectId: "ff-shop-e7e08",
-            storageBucket: "ff-shop-e7e08.appspot.com",
-            messagingSenderId: "692245023370",
-            appId: "1:692245023370:web:b04318a43b46938b4fb3e1",
-            measurementId: "G-1KVQNMJJMH"
-        };
+    <section id="productsSection">
+      <h2>Sản phẩm</h2>
+      <div id="productsGrid" class="grid"></div>
+    </section>
+  </main>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+  <!-- Modal đơn hàng -->
+  <div id="checkoutModal" class="modal">
+    <div class="modal-body">
+      <button class="close" id="closeCheckout">×</button>
+      <h3>Thanh toán — Xác nhận đơn</h3>
+      <div id="checkoutSummary"></div>
 
-        const productList = document.getElementById("product-list");
+      <div class="form">
+        <label>Tên</label><input id="buyerName" placeholder="Tên người mua">
+        <label>SĐT (Zalo)</label><input id="buyerPhone" placeholder="Số điện thoại">
+      </div>
 
-        onValue(ref(db, "products"), snapshot => {
-            productList.innerHTML = "";
-            snapshot.forEach(child => {
-                const item = child.val();
-                productList.innerHTML += `
-                    <div class="item">
-                        <img src="${item.image}">
-                        <h2>${item.name}</h2>
-                        <p class="price">${item.price} VNĐ</p>
-                    </div>
-                `;
-            });
-        });
-    </script>
+      <div class="flex-between">
+        <button id="sendConfirm" class="btn primary">Gửi xác nhận (email)</button>
+        <a id="sendZalo" class="btn outline" href="#" target="_blank">Mở Zalo</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
