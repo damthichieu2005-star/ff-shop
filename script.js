@@ -1,6 +1,21 @@
 // Basic shop data (sample). Replace images in images/ folder and change product data as needed.
 const products = [
-
+const products = [
+  {
+    id: "acc1",
+    title: "Acc VIP 1 - 1.2tr",
+    price: 1200000,
+    desc: "Level 86 - Nhiều skin",
+    img: "https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0161.jpeg"
+  },
+  {
+    id: "acc2",
+    title: "Acc VIP 2 - 1.5tr",
+    price: 1500000,
+    desc: "Nhiều súng lvl7-8 + đồ hiếm",
+    img: "https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/IMG_0162.jpeg"
+  }
+];
  // Utils
 function formatMoney(v){
   return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "₫";
