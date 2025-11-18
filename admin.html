@@ -1,55 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin - ShopBinBoi</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<title>Admin Shop</title>
+<style>
+body { font-family: Arial; background: #111; color: #fff; padding: 20px; }
+input, textarea { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px;}
+button { padding: 10px; background: #00cc44; color: white; border: none; border-radius: 5px; cursor:pointer; }
+.card { background:#222; padding:10px; margin-top:10px; border-radius:8px; }
+</style>
 </head>
 <body>
-  <main class="admin-container">
-    <h1>Admin ShopBinBoi</h1>
 
-    <div id="loginBox" class="card">
-      <h3>Đăng nhập</h3>
-      <label>Username</label><input id="adminUser" placeholder="username">
-      <label>Password</label><input id="adminPass" placeholder="password" type="password">
-      <div class="flex-between">
-        <button id="doLogin" class="btn primary">Đăng nhập</button>
-      </div>
-      <p class="muted">User: <strong>binboi207</strong> | Pass: <strong>mhieu2007@</strong></p>
-    </div>
+<h1>ADMIN QUẢN LÝ SHOP</h1>
 
-    <div id="panel" style="display:none;">
+<h3>Thêm ACC mới</h3>
+<input id="price" placeholder="Giá acc">
+<textarea id="desc" placeholder="Mô tả acc"></textarea>
+<button onclick="addAcc()">Thêm</button>
+
+<hr>
+
+<h3>Danh sách ACC</h3>
+<div id="list"></div>
+
+<script>
+let accs = JSON.parse(localStorage.getItem("acc-data") || "[]");
+
+function save() {
+  localStorage.setItem("acc-data", JSON.stringify(accs));
+  load();
+}
+
+function addAcc() {
+  const price = document.getElementById("price").value;
+  const desc  = document.getElementById("desc").value;
+
+  accs.push({ price, desc, date: Date.now() });
+  save();
+}
+
+function del(id) {
+  accs.splice(id, 1);
+  save();
+}
+
+function load() {
+  const box = document.getElementById("list");
+  box.innerHTML = "";
+
+  accs.forEach((acc, id) => {
+    const date = new Date(acc.date);
+    box.innerHTML += `
       <div class="card">
-        <h3>Thêm / Sửa sản phẩm</h3>
-        <label>Tiêu đề</label><input id="p_title">
-        <label>Mô tả</label><textarea id="p_desc"></textarea>
-        <label>Giá (VNĐ)</label><input id="p_price" type="number">
-        <label>Hình (chọn file hoặc dán URL)</label>
-        <input id="p_file" type="file" accept="image/*">
-        <input id="p_imgurl" placeholder="Hoặc dán URL hình (https://...)">
-        <div class="flex-between">
-          <button id="saveProduct" class="btn primary">Lưu</button>
-          <button id="clearForm" class="btn outline">Xóa form</button>
-        </div>
+        <p><b>ID:</b> ${id}</p>
+        <p><b>Giá:</b> ${acc.price}</p>
+        <p><b>Mô tả:</b> ${acc.desc}</p>
+        <p><b>Bảo hành:</b> 15 ngày từ ${date.toLocaleDateString()}</p>
+        <button onclick="del(${id})">Xóa</button>
       </div>
+    `;
+  });
+}
+load();
+</script>
 
-      <div class="card">
-        <h3>Danh sách sản phẩm</h3>
-        <div id="adminProducts"></div>
-        <div class="flex-between" style="margin-top:12px">
-          <button id="exportJSON" class="btn">Xuất products.json</button>
-          <input id="importFile" type="file" accept=".json">
-        </div>
-      </div>
-
-      <div style="margin-top:12px">
-        <button id="logout" class="btn muted">Đăng xuất</button>
-      </div>
-    </div>
-  </main>
-
-  <script src="app.js"></script>
 </body>
 </html>
