@@ -3,26 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ShopBinBoi - Shopee acc FF</title>
+  <title>ShopBinBoi • Acc Free Fire</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-        <img src="images/logo.png" alt="ShopBinBoi logo" class="logo" />
+        <img id="logo" src="images/logo.png" alt="ShopBinBoi" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
         <div class="brand-text">
-          <h1>ShopBinBoi</h1>
-          <p class="tag">Uy Tín — Giao Nick Nhanh</p>
+          <div class="shop-name">ShopBinBoiUyTin</div>
+          <div class="shop-sub">Acc FF • Momo / MB Bank • Zalo: 0347676833</div>
         </div>
       </div>
+
       <nav class="main-nav">
         <a href="#products">Sản phẩm</a>
         <a href="#how">Cách mua</a>
         <a href="#terms">Điều khoản</a>
         <a href="#contact">Liên hệ</a>
       </nav>
-      <div class="cart-btn" id="cartBtn">Giỏ (<span id="cartCount">0</span>)</div>
+
+      <div class="actions">
+        <button id="cartBtn" class="cart-btn">🛒 <span id="cartCount">0</span></button>
+      </div>
     </div>
   </header>
 
@@ -30,137 +34,126 @@
     <section class="hero">
       <div class="container hero-inner">
         <div class="hero-left">
-          <h2>Acc FF uy tín — Giá tốt</h2>
-          <p>Mua ngay, shop xác nhận và chuyển nick trong ngày. Thanh toán: MBBank, Momo.</p>
-          <a class="btn" href="#products">Xem sản phẩm</a>
+          <h1>ShopBinBoi — Acc Free Fire Uy Tín</h1>
+          <p class="lead">Thanh toán nhanh: <strong>MB Bank</strong> hoặc <strong>MoMo</strong>. Giao nick sau khi kiểm tra thanh toán.</p>
+          <div class="hero-cta">
+            <button class="btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Xem sản phẩm</button>
+            <a class="btn ghost" href="https://zalo.me/0347676833" target="_blank">Chat Zalo</a>
+          </div>
         </div>
         <div class="hero-right">
-          <img src="images/hero-placeholder.jpg" alt="hero" />
+          <img src="images/banner.jpg" alt="banner" onerror="this.src='https://via.placeholder.com/500x300?text=Banner'">
         </div>
       </div>
     </section>
 
-    <section id="top" class="container top-list">
-      <h3>Top nạp tháng</h3>
+    <section id="products" class="container section">
+      <h2>Sản phẩm nổi bật</h2>
+      <div id="productsGrid" class="grid"></div>
+    </section>
+
+    <section id="how" class="container section card">
+      <h3>Cách mua</h3>
       <ol>
-        <li>Namdepchai — 24.950.000₫</li>
-        <li>LongAK81 — 19.870.000₫</li>
-        <li>Datgaming — 18.570.000₫</li>
+        <li>Chọn acc → Thêm vào giỏ.</li>
+        <li>Vào Giỏ → Thanh toán → Chọn Momo hoặc Chuyển khoản MB.</li>
+        <li>Chuyển tiền theo nội dung → Gửi biên lai Zalo: <strong>0347676833</strong>.</li>
+        <li>Shop kiểm tra & gửi thông tin acc.</li>
       </ol>
     </section>
 
-    <section id="products" class="container products">
-      <h2>Sản phẩm (acc)</h2>
-      <div class="products-grid" id="productsGrid">
-        <!-- PRODUCT CARDS inserted by JS -->
-      </div>
-    </section>
-
-    <section id="how" class="container howbuy">
-      <h2>Cách mua</h2>
-      <ol>
-        <li>Chọn acc → Thêm vào giỏ → Thanh toán</li>
-        <li>Chọn Momo/Chuyển khoản → Chuyển tiền theo hướng dẫn</li>
-        <li>Gửi ảnh giao dịch vào Zalo/Facebook hoặc nút xác nhận trên trang</li>
-        <li>Shop xác nhận → chuyển nick và thông tin login</li>
-      </ol>
-    </section>
-
-    <section id="terms" class="container terms">
-      <h2>Điều khoản</h2>
+    <section id="terms" class="container section card">
+      <h3>Điều khoản</h3>
       <ul>
-        <li>Thanh toán hoàn toàn qua Momo hoặc chuyển khoản ngân hàng.</li>
-        <li>Không đổi trả khi đã chuyển tiền (trừ trường hợp lỗi do shop).</li>
-        <li>Shop sẽ gửi nick & pass sau khi xác nhận thanh toán.</li>
+        <li>Bảo hành 24h (theo điều kiện shop).</li>
+        <li>Không hoàn tiền nếu đổi mật khẩu sai do khách hàng.</li>
+        <li>Shop có quyền từ chối nếu phát hiện giao dịch nghi vấn.</li>
       </ul>
     </section>
 
-    <section id="contact" class="container contact">
-      <h2>Liên hệ & Thanh toán</h2>
+    <section id="contact" class="container section card">
+      <h3>Liên hệ & Thanh toán</h3>
       <div class="pay-grid">
         <div class="pay-card">
-          <h3>Chuyển khoản (MB - Ngân hàng)</h3>
-          <p><strong>Ngân hàng:</strong> MB Bank</p>
+          <h4>Ngân hàng (MB)</h4>
           <p><strong>STK:</strong> <span id="mbAccount">0347676833</span></p>
           <p><strong>Chủ TK:</strong> <span id="mbName">Ngân Minh Hiếu</span></p>
         </div>
-
         <div class="pay-card">
-          <h3>MoMo</h3>
+          <h4>MoMo</h4>
           <p><strong>Số MoMo:</strong> 0347676833</p>
-          <div class="qr-wrap">
-            <img id="momoQR" src="images/momo-qr-placeholder.png" alt="Momo QR (thay bằng QR thật)" />
-            <p class="qr-note">Quét QR để chuyển</p>
-          </div>
+          <img id="momoQR" src="images/qr-momo.png" alt="QR Momo" onerror="this.src='https://via.placeholder.com/200?text=MoMo+QR'">
         </div>
-
         <div class="pay-card">
-          <h3>Liên hệ nhanh</h3>
+          <h4>Liên hệ nhanh</h4>
           <p>Zalo: <a href="https://zalo.me/0347676833" target="_blank">0347676833</a></p>
-          <p>Facebook: <a href="#" id="fbLink" target="_blank">Ngân Minh Hiếu</a></p>
-          <p>Mua xong gửi ảnh giao dịch → nút "Gửi xác nhận" ở trang thanh toán.</p>
+          <p>Facebook: <a id="fbLink" href="https://www.facebook.com/nganminhhieu" target="_blank">Ngân Minh Hiếu</a></p>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- CART / CHECKOUT MODAL -->
-  <div id="cartModal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeCart">&times;</span>
+  <!-- CART MODAL -->
+  <div id="cartModal" class="modal hidden">
+    <div class="modal-body">
+      <button class="close" id="closeCart">✕</button>
       <h3>Giỏ hàng</h3>
-      <div id="cartItems"></div>
+      <div id="cartList"></div>
       <div class="cart-footer">
-        <div>Tổng: <strong id="cartTotal">0₫</strong></div>
+        <div>Tổng: <span id="cartTotal">0 ₫</span></div>
         <div class="cart-actions">
-          <button id="clearCart" class="btn muted">Xóa</button>
-          <button id="checkoutBtn" class="btn">Thanh toán</button>
+          <button class="btn ghost" id="clearCart">Xóa</button>
+          <button class="btn" id="openCheckout">Thanh toán</button>
         </div>
       </div>
+      <div id="orderDownload" style="margin-top:10px"></div>
     </div>
   </div>
 
-  <!-- CHECKOUT PAGE (simple overlay) -->
-  <div id="checkoutModal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeCheckout">&times;</span>
-      <h3>Thông tin thanh toán</h3>
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutModal" class="modal hidden">
+    <div class="modal-body">
+      <button class="close" id="closeCheckout">✕</button>
+      <h3>Xác nhận đơn hàng</h3>
+      <div id="checkoutSummary"></div>
 
-      <div class="checkout-body">
-        <div class="checkout-left">
-          <h4>Chuyển khoản</h4>
-          <p>Ngân hàng: <strong>MB Bank</strong></p>
-          <p>STK: <strong id="checkoutMB">0347676833</strong></p>
-          <p>Chủ TK: <strong id="checkoutName">Ngân Minh Hiếu</strong></p>
-          <hr/>
-          <h4>Hoặc MoMo</h4>
-          <p>SĐT MoMo: <strong>0347676833</strong></p>
-          <img src="images/momo-qr-placeholder.png" alt="momo qr" style="max-width:200px;">
-        </div>
-
-        <div class="checkout-right">
-          <h4>Thông tin đơn hàng</h4>
-          <div id="checkoutSummary"></div>
-          <label for="buyerName">Tên người mua</label>
-          <input id="buyerName" type="text" placeholder="Tên của bạn" />
-          <label for="buyerPhone">SĐT</label>
-          <input id="buyerPhone" type="text" placeholder="Số điện thoại" />
-
-          <div class="checkout-actions">
-            <button id="sendConfirm" class="btn">Gửi xác nhận (Mail)</button>
-            <a id="sendZalo" class="btn outline" href="#" target="_blank">Mở Zalo</a>
-          </div>
-        </div>
+      <div class="pay-methods">
+        <label><input type="radio" name="pay" value="momo" checked> MoMo</label>
+        <label><input type="radio" name="pay" value="bank"> MB Bank</label>
       </div>
+
+      <div id="momoInfo" class="pay-info">
+        <p>SĐT MoMo: <b>0347676833</b></p>
+        <img src="images/qr-momo.png" alt="QR MoMo" class="qr" onerror="this.src='https://via.placeholder.com/200?text=MoMo+QR'">
+        <p><button class="btn ghost" onclick="copyText('0347676833')">Sao chép SĐT</button></p>
+      </div>
+
+      <div id="bankInfo" class="pay-info hidden">
+        <p><b>Ngân hàng:</b> MB Bank</p>
+        <p><b>STK:</b> <span id="mbAcc">0347676833</span></p>
+        <p><b>Chủ TK:</b> NGÂN MINH HIẾU</p>
+        <p><button class="btn ghost" onclick="copyText(document.getElementById('mbAcc').innerText)">Sao chép STK</button></p>
+      </div>
+
+      <div style="margin-top:8px">
+        <label>Họ tên</label>
+        <input type="text" id="buyerName" placeholder="Tên người mua">
+        <label>SĐT</label>
+        <input type="text" id="buyerPhone" placeholder="Số điện thoại">
+        <label>Ghi chú</label>
+        <input type="text" id="buyerNote" placeholder="Ví dụ: mua acc VIP 1">
+      </div>
+
+      <div style="margin-top:12px">
+        <button class="btn" id="placeOrderBtn">Tạo đơn & Tải JSON</button>
+        <button class="btn ghost" id="cancelCheckout">Hủy</button>
+      </div>
+
+      <p class="small">Sau khi chuyển tiền, gửi biên lai Zalo: <strong>0347676833</strong></p>
     </div>
   </div>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© <span id="year"></span> ShopBinBoi — Liên hệ: 0347676833</p>
-      <img src="qr-momo-hieu.png" style="width:250px;">
-    </div>
-  </footer>
+  <footer class="site-footer">© <span id="year"></span> ShopBinBoiUyTin — Liên hệ: 0347676833</footer>
 
   <script src="script.js"></script>
 </body>
