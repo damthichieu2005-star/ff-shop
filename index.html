@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ShopBinBoi.Vn</title>
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">ShopBinBoi.Vn</div>
+    <div class="nav">
+      <button id="btnLogin">Đăng nhập</button>
+      <button id="btnCart">Giỏ (<span id="cartCount">0</span>)</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="payinfo">
+      <h3>MB: <a id="bankPhone" href="tel:0347676833">0347676833</a> — NGÂN MINH HIẾU</h3>
+      <p>Nội dung chuyển khoản: <b>Mua Acc GiaRE.BinBoi</b></p>
+      <div id="qrWrap">
+        <h4>QR thanh toán</h4>
+        <img id="qrImg" src="" alt="QR" style="max-width:240px"/>
+      </div>
+    </section>
+
+    <section>
+      <h2>Sản phẩm</h2>
+      <div id="productsGrid" class="grid"></div>
+    </section>
+  </main>
+
+  <!-- Cart modal -->
+  <div id="cartModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Giỏ hàng</h3>
+      <div id="cartItems"></div>
+      <div><b>Tổng: <span id="cartTotal">0</span>₫</b></div>
+      <button id="checkoutBtn">Thanh toán (Mở hướng dẫn chuyển)</button>
+      <button id="closeCart">Đóng</button>
+    </div>
+  </div>
+
+  <!-- Firebase + app scripts -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
