@@ -1,69 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>Admin Shop</title>
-<style>
-body { font-family: Arial; background: #111; color: #fff; padding: 20px; }
-input, textarea { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px;}
-button { padding: 10px; background: #00cc44; color: white; border: none; border-radius: 5px; cursor:pointer; }
-.card { background:#222; padding:10px; margin-top:10px; border-radius:8px; }
-</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin - ShopBinBoi</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>ADMIN QUẢN LÝ SHOP</h1>
+<main class="admin-wrap">
+  <h1>ADMIN - ShopBinBoi</h1>
 
-<h3>Thêm ACC mới</h3>
-<input id="price" placeholder="Giá acc">
-<textarea id="desc" placeholder="Mô tả acc"></textarea>
-<button onclick="addAcc()">Thêm</button>
+  <div id="loginBox" class="card">
+    <h3>Đăng nhập Admin</h3>
+    <input id="adminUser" placeholder="Username">
+    <input id="adminPass" type="password" placeholder="Password">
+    <div style="display:flex;gap:8px">
+      <button id="btnLogin" class="btn primary">Đăng nhập</button>
+      <button id="btnClear" class="btn outline">Xóa</button>
+    </div>
+    <p class="muted">User: <strong>binboi207</strong> | Pass: <strong>mhieu2007@</strong></p>
+  </div>
 
-<hr>
+  <div id="adminPanel" style="display:none">
+    <div class="card">
+      <h3>Bank / QR / Thông tin shop</h3>
+      <input id="bankText" placeholder="Ví dụ: MB - 0347676833 - NGÂN MINH HIẾU">
+      <label>Upload QR (image)</label>
+      <input type="file" id="qrFile" accept="image/*">
+      <button id="saveConfig" class="btn">Lưu cấu hình & upload QR</button>
+      <p id="configMsg" class="muted"></p>
+    </div>
 
-<h3>Danh sách ACC</h3>
-<div id="list"></div>
-
-<script>
-let accs = JSON.parse(localStorage.getItem("acc-data") || "[]");
-
-function save() {
-  localStorage.setItem("acc-data", JSON.stringify(accs));
-  load();
-}
-
-function addAcc() {
-  const price = document.getElementById("price").value;
-  const desc  = document.getElementById("desc").value;
-
-  accs.push({ price, desc, date: Date.now() });
-  save();
-}
-
-function del(id) {
-  accs.splice(id, 1);
-  save();
-}
-
-function load() {
-  const box = document.getElementById("list");
-  box.innerHTML = "";
-
-  accs.forEach((acc, id) => {
-    const date = new Date(acc.date);
-    box.innerHTML += `
-      <div class="card">
-        <p><b>ID:</b> ${id}</p>
-        <p><b>Giá:</b> ${acc.price}</p>
-        <p><b>Mô tả:</b> ${acc.desc}</p>
-        <p><b>Bảo hành:</b> 15 ngày từ ${date.toLocaleDateString()}</p>
-        <button onclick="del(${id})">Xóa</button>
+    <div class="card">
+      <h3>Thêm / Sửa sản phẩm</h3>
+      <input id="p_title" placeholder="Tiêu đề">
+      <input id="p_price" placeholder="Giá (VNĐ)">
+      <textarea id="p_desc" placeholder="Mô tả"></textarea>
+      <label>Ảnh sản phẩm</label>
+      <input type="file" id="p_file" accept="image/*">
+      <input id="p_img" placeholder="Hoặc dán URL image (nếu có)">
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="btnSaveProduct" class="btn primary">Lưu sản phẩm</button>
+        <button id="btnClearForm" class="btn outline">Xóa form</button>
       </div>
-    `;
-  });
-}
-load();
-</script>
+    </div>
 
+    <div class="card">
+      <h3>Danh sách sản phẩm</h3>
+      <div id="adminProducts"></div>
+    </div>
+
+    <div style="margin-top:12px">
+      <button id="btnLogout" class="btn muted">Đăng xuất</button>
+    </div>
+  </div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+<script src="app.js"></script>
 </body>
 </html>
