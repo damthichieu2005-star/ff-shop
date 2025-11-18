@@ -11,21 +11,25 @@
     <div class="container">
         <h1>ADMIN - ShopBinBoi</h1>
 
+        <!-- LOGIN -->
         <div id="loginBox">
             <h2>Đăng nhập Admin</h2>
-            <input type="text" id="adminUser" placeholder="Tài khoản">
-            <input type="password" id="adminPass" placeholder="Mật khẩu">
+
+            <input type="text" id="adminUser" placeholder="Tài khoản admin">
+            <input type="password" id="adminPass" placeholder="Mật khẩu admin">
+
             <button id="loginBtn">Đăng nhập</button>
         </div>
 
+        <!-- ADMIN PANEL -->
         <div id="adminPanel" style="display:none;">
-            <h2>Quản lý ACC FREE FIRE</h2>
+            <h2>Quản lý ACC</h2>
 
             <h3>➕ Thêm ACC</h3>
             <input id="accName" placeholder="Tên acc">
-            <input id="accPrice" placeholder="Giá bán">
+            <input id="accPrice" placeholder="Giá acc">
             <input id="accInfo" placeholder="Thông tin acc">
-            <button id="addAccBtn">Thêm</button>
+            <button id="addAccBtn">Thêm ACC</button>
 
             <h3>📦 Danh sách ACC</h3>
             <div id="accList"></div>
