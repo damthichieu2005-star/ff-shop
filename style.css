@@ -1,37 +1,62 @@
 body {
     margin: 0;
-    font-family: Arial;
-    background: #111;
-    color: #fff;
-    text-align: center;
+    font-family: Arial, sans-serif;
+    background: #0a0a0a;
+    color: white;
 }
 
 header {
-    background: #222;
-    padding: 15px;
-    font-size: 22px;
-    font-weight: bold;
+    text-align: center;
+    padding-bottom: 20px;
 }
 
-.product {
-    background: #1c1c1c;
-    width: 90%;
-    max-width: 350px;
-    margin: 20px auto;
-    padding: 15px;
-    border-radius: 10px;
+.logo {
+    width: 120px;
+    margin-top: 10px;
 }
 
-.product img {
+.banner {
     width: 100%;
     border-radius: 10px;
 }
 
-button {
-    margin-top: 10px;
-    padding: 10px 15px;
-    background: orange;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
+h2 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.grid {
+    padding: 20px;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.card {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.price {
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.qr {
+    width: 200px;
+    border-radius: 10px;
+    display: block;
+    margin: auto;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.5;
 }
