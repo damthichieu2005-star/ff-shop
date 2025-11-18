@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ADMIN - ShopBinBoi</title>
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <header class="top"><div class="brand">ADMIN - ShopBinBoi</div></header>
+
+  <main class="wrap">
+    <div id="authArea">
+      <button id="loginGoogle">Đăng nhập Google</button>
+      <button id="loginFacebook">Đăng nhập Facebook</button>
+      <div id="adminInfo"></div>
+    </div>
+
+    <div id="adminPanel" style="display:none;">
+      <h2>Thêm sản phẩm</h2>
+      <input id="pTitle" placeholder="Tiêu đề"/>
+      <input id="pPrice" placeholder="Giá (số)"/>
+      <textarea id="pDesc" placeholder="Mô tả"></textarea>
+      <input type="file" id="pImage"/>
+      <button id="addProductBtn">Thêm</button>
+
+      <h2>Danh sách sản phẩm</h2>
+      <div id="adminList"></div>
+
+      <h2>QR thanh toán (upload)</h2>
+      <input type="file" id="qrFile"/>
+      <button id="uploadQrBtn">Upload QR</button>
+      <div id="qrPreview"></div>
+    </div>
+  </main>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
