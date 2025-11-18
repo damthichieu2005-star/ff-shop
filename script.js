@@ -1,13 +1,14 @@
-// ====== PRODUCTS (mở rộng, thay img bằng images/... khi bạn upload) ======
+// ====== PRODUCTS (4 sản phẩm theo yêu cầu) ======
 const products = [
-  { id: "acc1", title: "Acc VIP 1 - 1.2tr", price: 1200000, desc: "Level 86 – nhiều skin", img: "https://via.placeholder.com/400x250?text=Acc+VIP+1" },
-  { id: "acc2", title: "Acc VIP 2 - 1.5tr", price: 1500000, desc: "Full súng, đồ hiếm", img: "https://via.placeholder.com/400x250?text=Acc+VIP+2" },
-  { id: "acc3", title: "Acc 980k", price: 980000, desc: "Acc ngon tầm 980k", img: "https://via.placeholder.com/400x250?text=980k" }
+  { id: "p1", title: "Acc VIP - 980k", price: 980000, desc: "Acc VIP giá rẻ, nhiều skin", img: "https://via.placeholder.com/400x250?text=Acc+VIP+980k" },
+  { id: "p2", title: "Acc VIP Cổ - 1.5tr", price: 1500000, desc: "Acc cổ nhiều đồ hiếm", img: "https://via.placeholder.com/400x250?text=Acc+VIP+C%E1%BB%91+1.5tr" },
+  { id: "p3", title: "Acc VIP Chuyên Đồ Nữ - 1.4tr", price: 1400000, desc: "Acc chuyên đồ nữ, phối trang phục đẹp", img: "https://via.placeholder.com/400x250?text=Acc+N%E1%BB%AF+1.4tr" },
+  { id: "p4", title: "Acc VIP S7 TVC Mùa 1 - 2tr", price: 2000000, desc: "Acc chuyên S7 TVC Mùa 1 cao cấp", img: "https://via.placeholder.com/400x250?text=Acc+S7+2tr" }
 ];
 
-// ====== UTIL ======
-function formatMoney(v){ return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫"; }
+// ====== HELPERS ======
 function $(id){ return document.getElementById(id); }
+function formatMoney(v){ return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫"; }
 
 // ====== RENDER PRODUCTS ======
 function renderProducts(){
@@ -84,17 +85,12 @@ function changeQty(id, delta){
 
 function removeItem(id){ CART = CART.filter(c=>c.id!==id); saveCart(); renderCart(); }
 $("clearCart")?.addEventListener("click", ()=>{ if(confirm("Xóa giỏ hàng?")){ CART=[]; saveCart(); renderCart(); } });
-
-// cart open button
 $("cartBtn")?.addEventListener("click", ()=>{ openCart(); });
-
-// close cart
 $("closeCart")?.addEventListener("click", ()=>{ closeCart(); });
 
 // ====== CHECKOUT ======
 $("openCheckout")?.addEventListener("click", ()=>{
   if(CART.length===0) return alert("Giỏ hàng trống");
-  // build summary
   const summary = $("checkoutSummary");
   let html = "<ul>";
   let total = 0;
@@ -104,32 +100,30 @@ $("openCheckout")?.addEventListener("click", ()=>{
     total += p.price*c.qty;
   });
   html += `</ul><p><strong>Tổng: ${formatMoney(total)}</strong></p>`;
+  html += `<p><b>MB Bank:</b> 0347676833 — Ngân Minh Hiếu<br><b>MoMo:</b> 0347676833</p>`;
   summary.innerHTML = html;
-  // show momo vs bank
-  const radios = document.getElementsByName("pay");
-  radios.forEach(r=> r.addEventListener("change", togglePayInfo));
-  togglePayInfo(); // init
-  // show modal
+  // ensure pay toggle works
+  togglePayInfo();
   $("checkoutModal").classList.remove("hidden");
 });
 
-// toggle pay view
 function togglePayInfo(){
-  const val = document.querySelector('input[name="pay"]:checked')?.value || 'momo';
-  if(val === 'momo'){ $("momoInfo").classList.remove("hidden"); $("bankInfo").classList.add("hidden"); }
+  const v = document.querySelector('input[name="pay"]:checked')?.value || 'momo';
+  if(v === 'momo'){ $("momoInfo").classList.remove("hidden"); $("bankInfo").classList.add("hidden"); }
   else { $("momoInfo").classList.add("hidden"); $("bankInfo").classList.remove("hidden"); }
 }
-$("closeCheckout")?.addEventListener("click", ()=>{ $("checkoutModal").classList.add("hidden"); });
+document.querySelectorAll('input[name="pay"]').forEach(r=> r.addEventListener('change', togglePayInfo));
+$("closeCheckout")?.addEventListener("click", ()=> $("checkoutModal").classList.add("hidden"));
 
 // copy helper
 function copyText(t){ navigator.clipboard.writeText(t).then(()=> alert('Đã sao chép: ' + t)).catch(()=> alert('Không copy được')); }
 
-// ====== PLACE ORDER (download json) ======
+// place order -> download json
 $("placeOrderBtn")?.addEventListener("click", ()=>{
   const name = $("buyerName").value || "Khách";
   const phone = $("buyerPhone").value || "";
   const note = $("buyerNote").value || "";
-  if(!phone){ return alert("Vui lòng nhập số điện thoại"); }
+  if(!phone) return alert("Vui lòng nhập số điện thoại");
   const order = {
     id: 'ORD' + Date.now(),
     created: new Date().toISOString(),
@@ -143,24 +137,16 @@ $("placeOrderBtn")?.addEventListener("click", ()=>{
     momo: '0347676833',
     bank: { name: 'MB Bank', acc: '0347676833', owner: 'NGÂN MINH HIẾU' }
   };
-
-  // create downloadable JSON
   const blob = new Blob([JSON.stringify(order, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = order.id + '.json'; a.click(); URL.revokeObjectURL(url);
-
   alert('Đã tạo đơn: ' + order.id + '\nVui lòng chuyển tiền theo hướng dẫn và gửi biên lai Zalo: 0347676833');
-  // clear cart + close
   CART = []; saveCart(); renderCart(); closeCart(); $("checkoutModal").classList.add("hidden");
 });
 
-// close checkout cancel
+// cancel checkout
 $("cancelCheckout")?.addEventListener("click", ()=> $("checkoutModal").classList.add("hidden"));
 
 // misc
 $("year").innerText = new Date().getFullYear();
-
-// close modal when clicking outside
-window.addEventListener('click', (e)=>{
-  if(e.target.classList.contains('modal')) e.target.classList.add('hidden');
-});
+window.addEventListener('click', (e)=>{ if(e.target.classList.contains('modal')) e.target.classList.add('hidden'); });
