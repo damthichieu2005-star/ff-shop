@@ -158,3 +158,394 @@
   <script src="script.js"></script>
 </body>
 </html>
+<!-- ========= VÒNG QUAY KIM CƯƠNG (PAID SPIN) ========= -->
+<style>
+/* --- styles riêng cho spinner --- */
+.spin-wrap {background:#0b1220;color:#e6eef6;padding:18px;border-radius:12px;margin:20px 0;}
+.spin-inner{display:flex;gap:20px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.wheel {width:320px;height:320px;border-radius:50%;position:relative;overflow:hidden;margin:auto;box-shadow:0 8px 30px rgba(0,0,0,.5);background:conic-gradient(
+  #1f2937 0deg 266.4deg, /* 74% -> 266.4deg */
+  #2b6fb4 266.4deg 302.4deg, /* 10% -> 36deg */
+  #6b28a3 302.4deg 338.4deg, /* 10% -> 36deg */
+  #d97706 338.4deg 356.4deg, /* 5% -> 18deg */
+  #ef4444 356.4deg 360deg   /* 1% -> 4deg */
+);}
+.wheel .center {position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:50%;background:linear-gradient(180deg,#fff,#ddd);display:flex;align-items:center;justify-content:center;font-weight:700;color:#111}
+.pointer {position:absolute;left:50%;top:-12px;transform:translateX(-50%);width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:24px solid #ff416c;z-index:10}
+.spin-controls {flex:1;min-width:280px}
+.small{font-size:13px;color:#bcd; margin:4px 0}
+.btn-pay{display:inline-block;padding:10px 16px;background:linear-gradient(90deg,#06b6d4,#ff416c);color:white;border-radius:8px;border:0;cursor:pointer}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);color:#e6eef6;padding:8px 12px;border-radius:8px;cursor:pointer}
+.kc-balance{font-size:18px;font-weight:800;color:#ffd166}
+.hist-list{max-height:200px;overflow:auto;padding:8px;background:rgba(255,255,255,0.02);border-radius:8px;margin-top:8px}
+.row {display:flex;gap:8px;align-items:center;justify-content:space-between;margin:6px 0}
+.info {margin-bottom:8px}
+.pay-note{font-size:13px;color:#cfeff0}
+@media(max-width:800px){ .spin-inner{flex-direction:column} .wheel{width:260px;height:260px} }
+</style>
+
+<section class="spin-wrap">
+  <h2>🎡 Vòng quay Kim Cương (150.000₫ / lượt)</h2>
+  <div class="spin-inner">
+    <div style="flex:0 0 360px; text-align:center;">
+      <div class="pointer"></div>
+      <div id="wheel" class="wheel" style="transition: transform 4s cubic-bezier(.2,.8,.2,1);"></div>
+      <div class="center" style="margin-top:12px;">Vòng Quay</div>
+    </div>
+
+    <div class="spin-controls">
+      <div class="info">
+        <div>✅ Giá 1 lượt: <b>150.000₫</b></div>
+        <div class="small">Lưu ý: Kim cương là <b>ảo</b>, KHÔNG thể rút thành tiền thật.</div>
+      </div>
+
+      <div style="margin:8px 0">
+        <div>Saldo KC: <span id="kcBalance" class="kc-balance">0 KC</span></div>
+        <div class="small">Bạn có thể rút mỗi lượt: <b>5.000 KC</b> (rút ảo)</div>
+      </div>
+
+      <div style="margin:12px 0">
+        <button class="btn-pay" id="startSpinBtn">Quay (150.000₫)</button>
+        <button class="btn-ghost" id="withdrawBtn">Rút 5.000 KC</button>
+      </div>
+
+      <div class="pay-note">
+        <div><b>Thanh toán:</b> MB Bank: 0347676833 (Ngân Minh Hiếu) hoặc MoMo 0347676833</div>
+        <div class="small">Sau khi chuyển, bấm "Tôi đã chuyển" để nhận lượt quay.</div>
+      </div>
+
+      <div style="margin-top:12px">
+        <strong>Lịch sử quay & rút</strong>
+        <div id="history" class="hist-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Thanh toán xác nhận modal (nhỏ) -->
+<div id="payModal" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:9999">
+  <div style="background:#0b1220;padding:16px;border-radius:10px;width:320px;color:#e6eef6">
+    <h3 style="margin-top:0">Xác nhận thanh toán 150.000₫</h3>
+    <p>Chuyển khoản qua MB hoặc MoMo theo thông tin bên dưới:</p>
+    <p><b>MB Bank:</b> 0347676833 — NGÂN MINH HIẾU</p>
+    <p><b>MoMo:</b> 0347676833</p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+      <button onclick="closePayModal()" class="btn-ghost">Hủy</button>
+      <button onclick="confirmPaid()" class="btn-pay">Tôi đã chuyển</button>
+    </div>
+    <div style="margin-top:8px;font-size:13px;color:#bcd">Bạn có thể gửi biên lai qua Zalo: 0347676833</div>
+  </div>
+</div>
+
+<script>
+// ========== CONFIG / PRIZES ==========
+// Weights: user provided (60 + 10 + 10 + 5 + 1 = 86) — we add the missing 14% to 0 KC so total = 100%.
+const prizes = [
+  { kc: 0, weight: 74 },    // 60 + 14 (added) => 74% total
+  { kc: 560, weight: 10 },
+  { kc: 3300, weight: 10 },
+  { kc: 9999, weight: 5 },
+  { kc: 100000, weight: 1 }
+];
+const SPIN_PRICE = 150000; // VND
+const WITHDRAW_AMOUNT = 5000; // KC per withdraw (ảo)
+
+// ========== STATE (localStorage) ==========
+const STORAGE_KC = 'shop_virtual_kc';
+const STORAGE_HIST = 'shop_spin_history';
+
+function loadKC(){ return parseInt(localStorage.getItem(STORAGE_KC) || "0", 10); }
+function saveKC(v){ localStorage.setItem(STORAGE_KC, String(v)); }
+function loadHist(){ try { return JSON.parse(localStorage.getItem(STORAGE_HIST) || "[]"); } catch(e){ return []; } }
+function saveHist(h){ localStorage.setItem(STORAGE_HIST, JSON.stringify(h)); }
+
+// ========== RENDER UI ==========
+const kcBalanceEl = document.getElementById('kcBalance');
+const historyEl = document.getElementById('history');
+const wheelEl = document.getElementById('wheel');
+const startBtn = document.getElementById('startSpinBtn');
+const withdrawBtn = document.getElementById('withdrawBtn');
+const payModal = document.getElementById('payModal');
+
+function updateBalanceUI(){ kcBalanceEl.textContent = loadKC().toLocaleString() + " KC"; }
+
+function renderHistory(){
+  const arr = loadHist().slice().reverse(); // newest first
+  if(arr.length === 0){ historyEl.innerHTML = "<p class='small'>Chưa có lịch sử.</p>"; return; }
+  historyEl.innerHTML = '';
+  arr.forEach(it=>{
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<div style="font-size:13px">${it.type} — <b>${it.kc?.toLocaleString() ?? ''} KC</b></div><div class="small">${new Date(it.time).toLocaleString()}</div>`;
+    historyEl.appendChild(row);
+  });
+}
+
+// ========== RANDOM PICK (by weights) ==========
+function pickPrize(){
+  const total = prizes.reduce((s,p)=>s+p.weight,0);
+  let r = Math.random() * total;
+  for(let p of prizes){
+    r -= p.weight;
+    if(r <= 0) return p.kc;
+  }
+  return prizes[0].kc;
+}
+
+// ========== SPIN ANIMATION ==========
+let spinning = false;
+function spinAnimation(targetKC, callback){
+  // compute a random angle landing on a sector corresponding to target prize
+  // We'll map sectors in same order as prizes array on wheel (conic-gradient used).
+  // Compute sector angle ranges based on their weights:
+  const total = prizes.reduce((s,p)=>s+p.weight,0);
+  let startAngle = 0;
+  let targetStart = 0, targetEnd = 0;
+  for(let p of prizes){
+    const angle = p.weight / total * 360;
+    if(p.kc === targetKC){
+      targetStart = startAngle;
+      targetEnd = startAngle + angle;
+      break;
+    }
+    startAngle += angle;
+  }
+  // pick a random angle within target sector
+  const pickAngle = targetStart + Math.random() * (targetEnd - targetStart);
+  // compute rotation: several turns + align so pointer (at top) hits pickAngle
+  const spins = 5; // number of full rotations
+  const final = 360*spins + (360 - pickAngle) + 360*0.25; // offset to tune
+  wheelEl.style.transition = 'transform 4s cubic-bezier(.2,.8,.2,1)';
+  wheelEl.style.transform = `rotate(${final}deg)`;
+  spinning = true;
+  // after animation ends
+  setTimeout(()=>{
+    // reset transform to avoid huge transform accumulation (calculate current angle modulo 360)
+    const finalAngle = final % 360;
+    wheelEl.style.transition = 'none';
+    wheelEl.style.transform = `rotate(${finalAngle}deg)`;
+    spinning = false;
+    if(callback) callback();
+  }, 4200);
+}
+
+// ========== PAYMENT FLOW ==========
+function openPayModal(){ payModal.style.display = 'flex'; }
+function closePayModal(){ payModal.style.display = 'none'; }
+
+function confirmPaid(){
+  // user confirms đã chuyển 150k --> perform spin
+  closePayModal();
+  // pick prize and animate
+  const prizeKC = pickPrize();
+  spinAnimation(prizeKC, ()=>{
+    // show result and add KC to user balance
+    const prev = loadKC();
+    const next = prev + prizeKC;
+    saveKC(next);
+    // save history entry
+    const hist = loadHist();
+    hist.push({ type: 'Quay', kc: prizeKC, time: Date.now(), price: SPIN_PRICE });
+    saveHist(hist);
+    updateBalanceUI();
+    renderHistory();
+    alert('Vòng quay xong! Bạn nhận được: ' + prizeKC.toLocaleString() + ' KC (ảo)');
+  });
+}
+
+// ========== BUTTON HANDLERS ==========
+startBtn.addEventListener('click', ()=>{
+  if(spinning) return alert('Vui lòng đợi vòng quay hoàn thành.');
+  // show payment modal to let user confirm they paid 150k
+  openPayModal();
+});
+
+function withdrawKC(){
+  const current = loadKC();
+  if(current < WITHDRAW_AMOUNT) return alert('Bạn không đủ KC để rút (cần ' + WITHDRAW_AMOUNT + ' KC).');
+  // do withdraw (virtual) -> subtract and record
+  const next = current - WITHDRAW_AMOUNT;
+  saveKC(next);
+  const hist = loadHist();
+  hist.push({ type: 'Rút', kc: -WITHDRAW_AMOUNT, time: Date.now() });
+  saveHist(hist);
+  updateBalanceUI();
+  renderHistory();
+  alert('Đã rút ' + WITHDRAW_AMOUNT.toLocaleString() + ' KC (ảo). Lưu ý: KC là ảo, không thể rút tiền thật).');
+}
+
+withdrawBtn.addEventListener('click', ()=>{ withdrawKC(); });
+
+// init
+updateBalanceUI();
+renderHistory();
+
+// close pay modal helper
+function closePayModal(){ payModal.style.display = 'none'; }
+</script>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Shop FF Bin Bói</title>
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background:#111;
+        color:white;
+        margin:0;
+    }
+    header{
+        background:#222;
+        padding:10px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        border-bottom:3px solid #ffcc00;
+    }
+    header img{
+        height:60px;
+    }
+    .qr-box img{
+        height:90px;
+        border-radius:10px;
+    }
+    h2{ text-align:center; margin-top:25px; }
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+        gap:15px;
+        padding:20px;
+    }
+    .card{
+        background:#1a1a1a;
+        border-radius:10px;
+        padding:10px;
+        border:1px solid #333;
+    }
+    .card img{
+        width:100%;
+        height:150px;
+        object-fit:cover;
+        border-radius:10px;
+    }
+    .btn{
+        background:#ffcc00;
+        border:0;
+        padding:10px;
+        border-radius:6px;
+        cursor:pointer;
+        width:100%;
+        font-weight:bold;
+        margin-top:5px;
+    }
+    .btn:hover{ opacity:0.8; }
+
+    /* Vòng quay */
+    #wheelBox{
+        text-align:center;
+        margin-top:30px;
+    }
+    #wheel{
+        width:300px;
+        height:300px;
+        border-radius:50%;
+        border:10px solid #ffcc00;
+        background:#222;
+        margin:auto;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-size:25px;
+        font-weight:bold;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <!-- Logo Free Fire mùa đông -->
+    <img src="https://i.imgur.com/Zl1M3pK.jpeg" alt="Logo FF">
+
+    <!-- QR MoMo bạn gửi -->
+    <div class="qr-box">
+        <img src="qr.jpg" alt="QR MoMo">
+    </div>
+</header>
+
+<h2>🔥 SẢN PHẨM SHOP</h2>
+
+<div class="grid" id="productsGrid"></div>
+
+<h2>🎡 Vòng quay kim cương – 150.000 VNĐ / lượt</h2>
+
+<div id="wheelBox">
+    <div id="wheel">Ấn quay</div><br>
+    <button class="btn" onclick="spinWheel()">Quay ngay</button>
+</div>
+
+<h2>💎 Gói rút 5000 KC</h2>
+<div style="text-align:center">
+    <button class="btn" onclick="rutKC()">Rút ngay 5000 KC</button>
+</div>
+
+<script>
+/* ===========================
+    DANH SÁCH SẢN PHẨM
+=========================== */
+const products = [
+  {id:"p1", title:"Acc VIP", price:980000, img:"https://i.imgur.com/B4lPxZb.jpeg"},
+  {id:"p2", title:"Acc VIP cổ", price:1500000, img:"https://i.imgur.com/B4lPxZb.jpeg"},
+  {id:"p3", title:"Acc VIP đồ nữ", price:1400000, img:"https://i.imgur.com/B4lPxZb.jpeg"},
+  {id:"p4", title:"Acc VIP S7 TVC mùa 1", price:2000000, img:"https://i.imgur.com/B4lPxZb.jpeg"},
+];
+
+/* Render sản phẩm */
+const grid = document.getElementById("productsGrid");
+products.forEach(p=>{
+    grid.innerHTML += `
+        <div class="card">
+            <img src="${p.img}">
+            <h3>${p.title}</h3>
+            <p>Giá: ${p.price.toLocaleString()}đ</p>
+            <button class="btn">Mua ngay</button>
+        </div>
+    `;
+});
+
+/* ===========================
+      VÒNG QUAY
+=========================== */
+function spinWheel(){
+    let wheel = document.getElementById("wheel");
+    wheel.style.transform = "rotate(1080deg)";
+    wheel.style.transition = "3s";
+
+    setTimeout(()=>{
+        const rand = Math.random()*100;
+        let reward = 0;
+
+        if(rand < 60) reward = 0;            // 60%
+        else if(rand < 70) reward = 560;     // 10%
+        else if(rand < 80) reward = 3300;    // 10%
+        else if(rand < 85) reward = 9999;    // 5%
+        else if(rand < 86) reward = 100000;  // 1% KC
+        else reward = 0;
+
+        wheel.style.transition = "0s";
+        wheel.style.transform = "rotate(0deg)";
+        wheel.innerText = reward + " KC";
+        alert("Bạn nhận được: " + reward + " KC (ảo – không rút được)");
+    }, 3100);
+}
+
+/* ===========================
+      RÚT KC
+=========================== */
+function rutKC(){
+    alert("Bạn đã rút thành công 5000 KC ảo!");
+}
+</script>
+
+</body>
+</html>
