@@ -1,0 +1,27 @@
+<?php
+require_once __DIR__ . '/../inc/functions.php';
+session_start();
+$user = current_user();
+// check admin
+if(!$user || $user['email'] !== 'admin@shopbinboi.vn'){
+    // redirect to login
+    header("Location: ../login.php");
+    exit;
+}
+?>
+<!doctype html><html><head><meta charset="utf-8"><title>Admin - ShopBinBoi</title><link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="wrap admin">
+  <h1>Admin - <?php echo SHOP_NAME; ?></h1>
+  <nav>
+    <a href="products.php">Sản phẩm</a> | <a href="orders.php">Đơn hàng</a> | <a href="../index.php">Xem site</a> | <a href="../logout.php">Đăng xuất</a>
+  </nav>
+  <hr>
+  <h2>Thống kê nhanh</h2>
+  <?php
+    $r1 = $mysqli->query("SELECT COUNT(*) as c FROM products")->fetch_assoc()['c'];
+    $r2 = $mysqli->query("SELECT COUNT(*) as c FROM orders")->fetch_assoc()['c'];
+    echo "<p>Sản phẩm: $r1</p><p>Đơn hàng: $r2</p>";
+  ?>
+</div>
+</body></html>
