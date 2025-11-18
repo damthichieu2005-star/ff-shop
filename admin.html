@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Admin - Shop BinBoi</title>
+<style>
+body { font-family: Arial; background: #f2f2f2; padding: 20px; }
+.box { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+input, select { padding: 10px; width: 100%; margin-bottom: 10px; }
+button { padding: 10px; background: black; color: white; border: none; width: 100%; }
+.product { padding: 10px; background: #eee; margin-top: 10px; border-radius: 8px; }
+</style>
+</head>
+<body>
+
+<h2>ADMIN SHOP BINBOI</h2>
+
+<div class="box">
+<h3>Đăng nhập GitHub</h3>
+<input id="gitUser" placeholder="Tên GitHub (ví dụ: damthichieu2005-star)">
+<input id="repo" placeholder="Repo (ff-shop)">
+<input id="token" placeholder="TOKEN GitHub (quan trọng)">
+<button onclick="login()">Đăng nhập</button>
+</div>
+
+<div id="adminPanel" style="display:none">
+
+<div class="box">
+<h3>Upload Ảnh Sản Phẩm</h3>
+<input type="file" id="imgFile">
+<button onclick="uploadImg()">Upload ảnh</button>
+<p id="uploadedLink"></p>
+</div>
+
+<div class="box">
+<h3>Thêm sản phẩm</h3>
+<input id="pname" placeholder="Tên sản phẩm">
+<input id="pprice" placeholder="Giá">
+<input id="pdesc" placeholder="Mô tả">
+<input id="pimg" placeholder="Link ảnh (sau khi upload)">
+<button onclick="addProduct()">Thêm sản phẩm</button>
+</div>
+
+<div class="box">
+<h3>Danh sách sản phẩm</h3>
+<div id="productList"></div>
+</div>
+
+</div>
+
+<script>
+let username = "", repo = "", token = "";
+let apiBase = "";
+let products = [];
+
+// LOGIN
+function login() {
+    username = document.getElementById("gitUser").value;
+    repo = document.getElementById("repo").value;
+    token = document.getElementById("token").value;
+
+    apiBase = `https://api.github.com/repos/${username}/${repo}/contents`;
+
+    loadProducts();
+    document.getElementById("adminPanel").style.display = "block";
+}
+
+// LOAD products.json
+async function loadProducts() {
+    let file = await fetch(`${apiBase}/products.json`);
+    let data = await file.json();
+    let content = JSON.parse(atob(data.content));
+    products = content;
+    renderProducts();
+}
+
+// RENDER PRODUCTS
+function renderProducts() {
+    let box = document.getElementById("productList");
+    box.innerHTML = "";
+
+    products.forEach((p, index) => {
+        box.innerHTML += `
+        <div class="product">
+            <b>${p.name}</b> - ${p.price}đ<br>
+            <small>${p.desc}</small><br>
+            <img src="${p.img}" width="120"><br>
+            <button onclick="deleteProduct(${index})">Xóa</button>
+        </div>`;
+    });
+}
+
+// SAVE products.json
+async function saveProducts() {
+    let file = await fetch(`${apiBase}/products.json`);
+    let data = await file.json();
+
+    await fetch(`${apiBase}/products.json`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `token ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            message: "Update products.json",
+            content: btoa(JSON.stringify(products, null, 2)),
+            sha: data.sha
+        })
+    });
+
+    alert("Đã lưu thành công!");
+}
+
+// ADD PRODUCT
+function addProduct() {
+    let p = {
+        name: document.getElementById("pname").value,
+        price: document.getElementById("pprice").value,
+        desc: document.getElementById("pdesc").value,
+        img: document.getElementById("pimg").value
+    };
+
+    products.push(p);
+    saveProducts();
+    renderProducts();
+}
+
+// DELETE PRODUCT
+function deleteProduct(i) {
+    products.splice(i, 1);
+    saveProducts();
+    renderProducts();
+}
+
+// UPLOAD IMAGE
+async function uploadImg() {
+    let file = document.getElementById("imgFile").files[0];
+    if (!file) return alert("Chưa chọn ảnh!");
+
+    let reader = new FileReader();
+    reader.onload = async () => {
+        let base64 = reader.result.split(",")[1];
+
+        let res = await fetch(`${apiBase}/images/${file.name}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `token ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: "Upload image",
+                content: base64
+            })
+        });
+
+        let json = await res.json();
+
+        if (json.content) {
+            let link = `https://raw.githubusercontent.com/${username}/${repo}/main/images/${file.name}`;
+            document.getElementById("uploadedLink").innerText = link;
+            document.getElementById("pimg").value = link;
+        } else {
+            alert("Lỗi upload ảnh!");
+        }
+    };
+    reader.readAsDataURL(file);
+}
+</script>
+
+</body>
+</html>
