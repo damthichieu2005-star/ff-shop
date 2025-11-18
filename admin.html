@@ -1,152 +1,37 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
-<link rel="stylesheet" href="style.css">
-<style>
-.admin-box {
-  background:#12141c;
-  padding:15px;
-  border-radius:10px;
-}
-
-input, textarea {
-  width:100%;
-  padding:8px;
-  margin-top:5px;
-  margin-bottom:10px;
-  border-radius:6px;
-}
-
-.prod-item {
-  background:#1b1e29;
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN - ShopBinBoi</title>
+    <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
+    <div class="container">
+        <h1>ADMIN - ShopBinBoi</h1>
 
-<h2>Admin Quản lý Shop</h2>
+        <div id="loginBox">
+            <h2>Đăng nhập Admin</h2>
+            <input type="text" id="adminUser" placeholder="Tài khoản">
+            <input type="password" id="adminPass" placeholder="Mật khẩu">
+            <button id="loginBtn">Đăng nhập</button>
+        </div>
 
-<div class="admin-box">
-  <h3>Thông tin thanh toán</h3>
-  <label>Số MB Bank</label>
-  <input id="mb" placeholder="Ví dụ: 0347676833">
+        <div id="adminPanel" style="display:none;">
+            <h2>Quản lý ACC FREE FIRE</h2>
 
-  <label>Tên chủ TK</label>
-  <input id="name" placeholder="Ví dụ: NGÂN MINH HIẾU">
+            <h3>➕ Thêm ACC</h3>
+            <input id="accName" placeholder="Tên acc">
+            <input id="accPrice" placeholder="Giá bán">
+            <input id="accInfo" placeholder="Thông tin acc">
+            <button id="addAccBtn">Thêm</button>
 
-  <label>Tải ảnh QR mới</label>
-  <input type="file" id="qrInput" accept="image/*">
+            <h3>📦 Danh sách ACC</h3>
+            <div id="accList"></div>
+        </div>
+    </div>
 
-  <button onclick="saveBank()">Lưu</button>
-</div>
-
-<hr>
-
-<div class="admin-box">
-  <h3>Thêm Sản phẩm</h3>
-  <input id="pName" placeholder="Tên acc">
-  <input id="pDesc" placeholder="Mô tả">
-  <input id="pPrice" placeholder="Giá (vd: 980000)">
-  <label>Ảnh sản phẩm</label>
-  <input type="file" id="pImg" accept="image/*">
-  <button onclick="addProduct()">Thêm</button>
-</div>
-
-<h3>Danh sách sản phẩm</h3>
-<div id="prodList"></div>
-
-<script>
-// === LOAD DATA ===
-let products = JSON.parse(localStorage.getItem("products")) || [];
-let bank = JSON.parse(localStorage.getItem("bank")) || {
-    mb: "0347676833",
-    name: "NGÂN MINH HIẾU",
-    qr: "qr.png"
-};
-
-// === Lưu thông tin ngân hàng ===
-function saveBank() {
-    let file = document.getElementById("qrInput").files[0];
-
-    bank.mb = document.getElementById("mb").value;
-    bank.name = document.getElementById("name").value;
-
-    // nếu có upload qr mới
-    if (file) {
-        let reader = new FileReader();
-        reader.onload = () => {
-            bank.qr = reader.result;
-            localStorage.setItem("bank", JSON.stringify(bank));
-            alert("Đã lưu thông tin + QR mới");
-        };
-        reader.readAsDataURL(file);
-    } else {
-        localStorage.setItem("bank", JSON.stringify(bank));
-        alert("Đã lưu thông tin");
-    }
-}
-
-// === Thêm sản phẩm ===
-function addProduct() {
-    let name = document.getElementById("pName").value;
-    let desc = document.getElementById("pDesc").value;
-    let price = Number(document.getElementById("pPrice").value);
-    let imgFile = document.getElementById("pImg").files[0];
-
-    if (!name || !desc || !price || !imgFile) {
-        alert("Nhập đầy đủ thông tin!");
-        return;
-    }
-
-    let reader = new FileReader();
-    reader.onload = () => {
-        products.push({
-            name, desc, price,
-            img: reader.result
-        });
-        localStorage.setItem("products", JSON.stringify(products));
-        renderProducts();
-        alert("Đã thêm sản phẩm!");
-    };
-    reader.readAsDataURL(imgFile);
-}
-
-// === Xóa sản phẩm ===
-function deleteProduct(i) {
-    products.splice(i, 1);
-    localStorage.setItem("products", JSON.stringify(products));
-    renderProducts();
-}
-
-// === Hiển thị danh sách sản phẩm ===
-function renderProducts() {
-    const box = document.getElementById("prodList");
-    box.innerHTML = "";
-
-    products.forEach((p, i) => {
-        box.innerHTML += `
-        <div class="prod-item">
-            <img src="${p.img}" style="width:100%; border-radius:6px;">
-            <p><b>${p.name}</b></p>
-            <p>${p.desc}</p>
-            <p>Giá: ${p.price.toLocaleString("vi-VN")}đ</p>
-            <button style="background:#ff4444" onclick="deleteProduct(${i})">Xóa</button>
-        </div>`;
-    });
-}
-
-// === hiển thị thông tin bank lên input ===
-document.getElementById("mb").value = bank.mb;
-document.getElementById("name").value = bank.name;
-
-renderProducts();
-</script>
-
+    <script src="admin.js"></script>
 </body>
 </html>
