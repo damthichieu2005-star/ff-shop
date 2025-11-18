@@ -1,33 +1,7 @@
 // Basic shop data (sample). Replace images in images/ folder and change product data as needed.
 const products = [
-{
-  name: "Acc VIP 2 - 1.5tr",
-  price: 1500000,
-  desc: "Full súng, level cao, nhiều skin vip",
-  img: "https://raw.githubusercontent.com/damthichieu2005-star/ff-shop/main/images/A3CC2068-7808-40FC-98D8-E5BF0841D3BA.jpeg"
-},  id: "acc1",
-    title: "Acc VIP 1 - 1.2tr",
-    price: 1200000,
-    desc: "Level 86 - Nhiều skin",
-    img: "images/acc1.jpg"
-  },
-  ];
-    id: "acc2",
-    title: "Acc Pro - 980k",
-    price: 980000,
-    desc: "Level 71 - Nhiều trang bị",
-    img: "images/acc2.jpg"
-  },
-  {
-    id: "acc3",
-    title: "Acc Cổ - 1.2tr",
-    price: 1200000,
-    desc: "Acc cổ nhiều đồ",
-    img: "images/acc3.jpg"
-  }
-];
 
-// Utils
+ // Utils
 function formatMoney(v){
   return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "₫";
 }
